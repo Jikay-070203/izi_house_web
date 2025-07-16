@@ -1,13 +1,14 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { SessionProvider } from "@/components/providers/SessionProvider"
 import Head from 'next/head'
 
-const inter = Inter({ subsets: ["latin", "vietnamese"] })
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "IZI HOUSE",
-  description: "Quản lý thông tin hồ sơ cá nhân của bạn",
+  description: "Tìm kiếm và đăng tin cho thuê phòng trọ",
   icons: {
     icon: '/logo/logo.png',
     shortcut: '/logo/logo.png',
@@ -28,7 +29,11 @@ export default function RootLayout({
         <link rel="icon" href="/logo/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo/logo.png" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <SessionProvider>
+          {children}
+        </SessionProvider>
+      </body>
     </html>
   )
 }

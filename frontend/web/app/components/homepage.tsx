@@ -39,6 +39,7 @@ import Link from "next/link"
 import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 interface PropertyListing {
   id: string
@@ -78,6 +79,7 @@ interface Notification {
 }
 
 export default function Homepage() {
+  const { data: session } = useSession()
   const [searchTab, setSearchTab] = useState("mua-ban")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [randomImages, setRandomImages] = useState<string[]>([])
@@ -406,28 +408,40 @@ export default function Homepage() {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
 
-              <Link 
-                href="/post" 
-                className="px-4 py-2 bg-white text-[#20db9b] font-medium rounded-md border-2 border-[#20db9b] hover:bg-[#20db9b] hover:text-white transition-colors duration-300"
-              >
-                ĐĂNG TIN
-              </Link>
+              {session && (
+                <Link 
+                  href="/post" 
+                  className="px-4 py-2 bg-white text-[#20db9b] font-medium rounded-md border-2 border-[#20db9b] hover:bg-[#20db9b] hover:text-white transition-colors duration-300"
+                >
+                  ĐĂNG TIN
+                </Link>
+              )}
             </nav>
 
             <div className="flex items-center gap-4">
-              <Link 
-                href="/register" 
-                className="px-4 py-2 text-[#20db9b] font-medium rounded-md border border-[#20db9b] hover:bg-[#f0fdf9] transition-colors duration-300"
-              >
-                ĐĂNG KÍ
-              </Link>
-              <Link 
-                href="/login" 
-                className="px-4 py-2 bg-[#20db9b] text-white font-medium rounded-md hover:bg-[#1ac78a] transition-colors duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
-              >
-                ĐĂNG NHẬP
-              </Link>
-
+              {!session ? (
+                <>
+                  <Link 
+                    href="/register" 
+                    className="px-4 py-2 text-[#20db9b] font-medium rounded-md border border-[#20db9b] hover:bg-[#f0fdf9] transition-colors duration-300"
+                  >
+                    ĐĂNG KÍ
+                  </Link>
+                  <Link 
+                    href="/login" 
+                    className="px-4 py-2 bg-[#20db9b] text-white font-medium rounded-md hover:bg-[#1ac78a] transition-colors duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
+                  >
+                    ĐĂNG NHẬP
+                  </Link>
+                </>
+              ) : (
+                <Link 
+                  href="/profile" 
+                  className="px-4 py-2 text-gray-700 font-medium hover:text-[#20db9b] transition-colors duration-300"
+                >
+                  {session.user?.name || 'Tài khoản'}
+                </Link>
+              )}
               {/* Notification Bell */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
