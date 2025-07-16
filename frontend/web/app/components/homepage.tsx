@@ -378,7 +378,7 @@ export default function Homepage() {
                 href="/promotions" 
                 className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
               >
-                <span className="relative z-10">CHƯƠNG TRÌNH ƯU ĐÃI</span>
+                <span className="relative z-10">111CHƯƠNG TRÌNH ƯU ĐÃI</span>
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
               
