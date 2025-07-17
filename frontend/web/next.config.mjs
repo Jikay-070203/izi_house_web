@@ -1,24 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
-  
-  // Tắt tính năng tạo symlink
-  experimental: {
-    outputFileTracingExcludes: {
-      '*': [
-        '**/node_modules/**/*',
-        '.next/**/*',
-      ],
-    },
-  },
+  output: 'export',
 
-  // Cấu hình images
   images: {
     unoptimized: true,
   },
 
-  // Bỏ qua lỗi TypeScript và ESLint khi build
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -26,7 +14,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // Cấu hình webpack
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
