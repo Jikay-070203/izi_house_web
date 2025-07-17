@@ -79,7 +79,7 @@ interface Notification {
 }
 
 export default function Homepage() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [searchTab, setSearchTab] = useState("mua-ban")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [randomImages, setRandomImages] = useState<string[]>([])
@@ -124,33 +124,37 @@ export default function Homepage() {
       id: 1,
       title: "Ưu đãi đặc biệt",
       description: "Phòng trọ tại quận 1 với đầy đủ tiện nghi, giá tốt nhất thị trường.",
-      image: "/banner/izi_house.png", // Thay đổi đường dẫn ảnh
+      image: "/banner/izi_house.png",
       buttonText: "Xem chi tiết",
-      buttonLink: "/promotions/summer-sale"
+      buttonLink: "https://www.facebook.com/profile.php?id=61577216990159",
+      target: "_blank"
     },
     {
       id: 2,
       title: "Trải nghiệm mẫu miễn phí",
       description: "Đặt lịch xem nhà và nhận ngay voucher 1 triệu đồng khi ký hợp đồng trong tháng này.",
-      image: "/banner/goi_dang_tin.png", // Thay đổi đường dẫn ảnh
-      buttonText: "Đặt lịch ngay",
-      buttonLink: "/booking"
+      image: "/banner/goi_dang_tin.png",
+      buttonText: "Xem ưu đãi",
+      buttonLink: "/promotions",
+      target: "_self"
     },
     {
       id: 3,
       title: "Nhận báo giá ưu đãi",
       description: "Đăng ký nhận báo giá ưu đãi đặc biệt dành riêng cho khách hàng mới.",
-      image: "/banner/wifi.png", // Thay đổi đường dẫn ảnh
+      image: "/banner/wifi.png",
       buttonText: "Đăng ký ngay",
-      buttonLink: "/register"
+      buttonLink: "https://fpt.vn/goi-gia-dinh-sieu-tien-ich?utm_source=bannerfptvn",
+      target: "_blank"
     },
     {
       id: 4,
       title: "Nhận báo giá ưu đãi",
       description: "Đăng ký nhận báo giá ưu đãi đặc biệt dành riêng cho khách hàng mới.",
-      image: "/banner/van_chuyen.png", // Thay đổi đường dẫn ảnh
+      image: "/banner/van_chuyen.png",
       buttonText: "Đăng ký ngay",
-      buttonLink: "/register"
+      buttonLink: "https://thanhhungvn.vn/",
+      target: "_blank"
     },
   ]
 
@@ -377,6 +381,13 @@ export default function Homepage() {
 
             <nav className="hidden md:flex items-center gap-6">
               <Link 
+                href="/about" 
+                className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
+              >
+                <span className="relative z-10">GIỚI THIỆU</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link 
                 href="/promotions" 
                 className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
               >
@@ -408,7 +419,7 @@ export default function Homepage() {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
 
-              {session && (
+              {status === 'authenticated' && (
                 <Link 
                   href="/post" 
                   className="px-4 py-2 bg-white text-[#20db9b] font-medium rounded-md border-2 border-[#20db9b] hover:bg-[#20db9b] hover:text-white transition-colors duration-300"
@@ -419,7 +430,7 @@ export default function Homepage() {
             </nav>
 
             <div className="flex items-center gap-4">
-              {!session ? (
+              {!session && (
                 <>
                   <Link 
                     href="/register" 
@@ -434,7 +445,8 @@ export default function Homepage() {
                     ĐĂNG NHẬP
                   </Link>
                 </>
-              ) : (
+              )}
+              {session && (
                 <Link 
                   href="/profile" 
                   className="px-4 py-2 text-gray-700 font-medium hover:text-[#20db9b] transition-colors duration-300"
@@ -521,20 +533,7 @@ export default function Homepage() {
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">Chương trình ưu đãi</h2>
             <div className="flex items-center space-x-2">
-              <button 
-                onClick={scrollPrev}
-                className="p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition-colors"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
-              </button>
-              <button 
-                onClick={scrollNext}
-                className="p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition-colors"
-                aria-label="Next slide"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
-              </button>
+              {}
             </div>
           </div>
 
@@ -558,12 +557,14 @@ export default function Homepage() {
                             <p className="text-xl md:text-2xl mb-8 leading-relaxed animate-fadeIn animation-delay-200">
                               {promo.description}
                             </p>
-                            <a
+                            <Link
                               href={promo.buttonLink}
+                              target={promo.target || "_self"}
+                              rel={promo.target === "_blank" ? "noopener noreferrer" : undefined}
                               className="inline-block bg-red-600 hover:bg-red-700 text-white font-medium px-8 py-4 rounded-lg text-lg transition-colors duration-300 transform hover:scale-105"
                             >
                               {promo.buttonText}
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </div>
@@ -933,9 +934,15 @@ export default function Homepage() {
                   )}
                 </div>
                 <CardContent className="p-4 flex-1 flex flex-col">
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                    {property.title}
-                  </h3>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-gray-900 line-clamp-2">
+                      {property.title}
+                    </h3>
+                    <div className="flex items-center bg-primary/10 text-primary text-xs px-2 py-1 rounded">
+                      <Star className="w-3 h-3 fill-current mr-1" />
+                      <span>{property.rating}</span>
+                    </div>
+                  </div>
                   <p className="text-primary font-bold text-lg mb-2">{property.price}</p>
                   <div className="flex items-center text-gray-600 text-sm mb-2">
                     <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
@@ -1010,27 +1017,61 @@ export default function Homepage() {
       {/* App Download */}
       <section className="py-16 bg-blue-600">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <div className="text-white">
-                <h3 className="text-2xl font-bold mb-2">TÌM KIẾM - LỰA CHỌN BẤT ĐỘNG SAN</h3>
-
-                <p className="mb-6">IZI HOUSE - Find your room, your way With trust and ease</p>
-                <div className="flex gap-4">
-                  <Button className="bg-black text-white hover:bg-gray-800">
-                    <Smartphone className="w-4 h-4 mr-2" />
-                    App Store
-                  </Button>
-                  <Button className="bg-black text-white hover:bg-gray-800">
-                    <Download className="w-4 h-4 mr-2" />
-                    Google Play
-                  </Button>
-                </div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="text-white max-w-xl">
+              <h3 className="text-2xl md:text-3xl font-bold mb-4">TẢI ỨNG DỤNG IZI HOUSE</h3>
+              <p className="text-lg mb-6">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
+                >
+                  <div className="mr-2">
+                    <svg width="20" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.835 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xs">Tải xuống trên</div>
+                    <div className="font-semibold">App Store</div>
+                  </div>
+                </a>
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
+                >
+                  <div className="mr-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xs">Tải xuống trên</div>
+                    <div className="font-semibold">Google Play</div>
+                  </div>
+                </a>
               </div>
             </div>
-            <div className="hidden lg:block">
-              <div className="bg-white p-4 rounded-lg">
-                <img src="/placeholder.svg?height=150&width=150" alt="QR Code" className="w-32 h-32" />
+            <div className="mt-6 flex items-center justify-center lg:justify-start">
+              <div className="bg-white p-2 rounded-lg">
+                <img 
+                  src="/QR/QR.png" 
+                  alt="IZI HOUSE Logo" 
+                  className="w-48 h-auto object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22192%22%20height%3D%22192%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22192%22%20height%3D%22192%22%20fill%3D%22%23f3f4f6%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20fill%3D%22%239ca3af%22%3EIZI%20HOUSE%20Logo%3C%2Ftext%3E%3C%2Fsvg%3E';
+                  }}
+                />
+              </div>
+              <div className="ml-4 text-sm">
+                <p>Quét mã QR để tải ứng dụng</p>
+                <p className="text-blue-200">Hỗ trợ iOS & Android</p>
               </div>
             </div>
           </div>
@@ -1097,7 +1138,7 @@ export default function Homepage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  Email: info@homedy.com
+                  Email: izihouse@gmail.com
                 </li>
               </ul>
             </div>
@@ -1105,15 +1146,44 @@ export default function Homepage() {
             <div>
               <h4 className="font-bold mb-4">KẾT NỐI VỚI CHÚNG TÔI</h4>
               <div className="flex gap-4">
-                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                  <Facebook className="w-5 h-5" />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                  <Youtube className="w-5 h-5" />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                  <Instagram className="w-5 h-5" />
-                </Button>
+                <a 
+                  href="https://www.facebook.com/profile.php?id=61577216990159" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+                <a 
+                  href="#" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
+                  </svg>
+                </a>
+                <a 
+                  href="#" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M12 2.16c4.81 0 8.84 3.15 10.2 7.5h-3.9a6.5 6.5 0 0 0-12.6 0H1.8c1.36-4.35 5.39-7.5 10.2-7.5z" opacity=".1"></path>
+                    <path d="M21.95 10.5h-3.8a6.5 6.5 0 0 0-12.3 0H1.8a10.5 10.5 0 0 1 20.15 0z" opacity=".25"></path>
+                    <path d="M12 21.84c-4.81 0-8.84-3.15-10.2-7.5h3.9a6.5 6.5 0 0 1 12.6 0h3.9c-1.36 4.35-5.39 7.5-10.2 7.5z" opacity=".5"></path>
+                    <path d="M12 2.16c-4.81 0-8.84 3.15-10.2 7.5h3.9a6.5 6.5 0 0 1 12.6 0h3.9c-1.36-4.35-5.39-7.5-10.2-7.5z" fill="currentColor"></path>
+                    <path d="M12 21.84c-4.81 0-8.84-3.15-10.2-7.5h3.9a6.5 6.5 0 0 0 12.6 0h3.9c-1.36 4.35-5.39 7.5-10.2 7.5z" fill="currentColor"></path>
+                  </svg>
+                </a>
+                <a 
+                  href="#" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M12 2.16c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm-1.5 15.5v-6.5h-2v-2h2v-1.5c0-1.93 1.57-3.5 3.5-3.5h1.5v2h-1.5c-.83 0-1.5.67-1.5 1.5v1.5h2.5v2h-2.5v6.5h-2z"></path>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>

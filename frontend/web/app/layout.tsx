@@ -14,7 +14,13 @@ export const metadata: Metadata = {
     shortcut: '/logo/logo.png',
     apple: '/logo/logo.png',
   },
-  manifest: '/site.webmanifest'
+  manifest: '/site.webmanifest',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    viewportFit: 'cover',
+  },
 }
 
 export default function RootLayout({
@@ -23,15 +29,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="vi">
+    <html lang="vi" className="scroll-smooth">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="icon" href="/logo/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo/logo.png" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen w-full overflow-x-hidden`}>
         <SessionProvider>
-          {children}
+          <div className="min-h-screen flex flex-col">
+            {children}
+          </div>
         </SessionProvider>
       </body>
     </html>
