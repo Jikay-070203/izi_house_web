@@ -7,92 +7,32 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Bell, Grid3X3, Users, Settings, FileText, BarChart3, Mail, Plus, ArrowLeft, Camera } from "lucide-react"
+import { Search, Bell, Grid3X3, Users, Settings, FileText, BarChart3, Mail, Plus, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 interface ProfileData {
   fullName: string
-  phoneNumber: string
-  changePassword: string
+  nickName: string
+  gender: string
+  country: string
   language: string
-  dateOfBirth: string
+  timeZone: string
   email: string
-  newEmail: string
-  avatar: string | null
 }
 
 export default function ProfilePage() {
   const [profileData, setProfileData] = useState<ProfileData>({
-    fullName: "Nguyễn Thanh Hòa",
-    phoneNumber: "",
-    changePassword: "",
+    fullName: "Alexa Rawles",
+    nickName: "",
+    gender: "",
+    country: "",
     language: "",
-    dateOfBirth: "",
+    timeZone: "",
     email: "alexa.rawles@gmail.com",
-    newEmail: "",
-    avatar: null
   })
-
-  const [isEditingEmail, setIsEditingEmail] = useState(false)
-  const [isUploading, setIsUploading] = useState(false)
 
   const handleInputChange = (field: keyof ProfileData, value: string) => {
     setProfileData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    // Check if file is an image
-    if (!file.type.startsWith('image/')) {
-      alert('Vui lòng chọn file ảnh')
-      return
-    }
-
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Kích thước ảnh không được vượt quá 5MB')
-      return
-    }
-
-    setIsUploading(true)
-    
-    try {
-      // In a real app, you would upload the file to your server here
-      // For now, we'll just create a local URL for the image
-      const imageUrl = URL.createObjectURL(file)
-      setProfileData(prev => ({ ...prev, avatar: imageUrl }))
-    } catch (error) {
-      console.error('Lỗi khi tải lên ảnh đại diện:', error)
-      alert('Có lỗi xảy ra khi tải lên ảnh đại diện')
-    } finally {
-      setIsUploading(false)
-    }
-  }
-
-  const handleSaveEmail = () => {
-    if (!profileData.newEmail) {
-      alert('Vui lòng nhập địa chỉ email mới')
-      return
-    }
-    
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(profileData.newEmail)) {
-      alert('Vui lòng nhập địa chỉ email hợp lệ')
-      return
-    }
-
-    // In a real app, you would verify the email here
-    // For now, we'll just update the email in the UI
-    setProfileData(prev => ({
-      ...prev,
-      email: prev.newEmail,
-      newEmail: ''
-    }))
-    setIsEditingEmail(false)
-    alert('Đã gửi liên kết xác nhận đến email mới. Vui lòng kiểm tra hộp thư của bạn.')
   }
 
   const handleSaveProfile = async () => {
@@ -113,7 +53,7 @@ export default function ProfilePage() {
             </Link>
             <div className="h-6 w-px bg-gray-300"></div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">IZI HOUSE</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Chào mừng, Amanda</h1>
               <p className="text-sm text-gray-500">
                 {new Date().toLocaleDateString("vi-VN", {
                   day: "numeric",
@@ -167,163 +107,132 @@ export default function ProfilePage() {
             <CardHeader className="pb-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="relative group">
-                    <Avatar className="w-20 h-20">
-                      <AvatarImage 
-                        src={profileData.avatar || "/placeholder.svg?height=80&width=80"} 
-                        alt={`Ảnh đại diện ${profileData.fullName}`} 
-                      />
-                      <AvatarFallback className="text-xl">
-                        {profileData.fullName.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <label 
-                      htmlFor="avatar-upload"
-                      className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                      title="Đổi ảnh đại diện"
-                    >
-                      <Camera className="w-6 h-6 text-white" />
-                      <input
-                        id="avatar-upload"
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleAvatarUpload}
-                        disabled={isUploading}
-                      />
-                    </label>
-                    {isUploading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                      </div>
-                    )}
-                  </div>
+                  <Avatar className="w-16 h-16">
+                    <AvatarImage src="/placeholder.svg?height=64&width=64" alt="Ảnh đại diện Alexa Rawles" />
+                    <AvatarFallback className="text-lg">AR</AvatarFallback>
+                  </Avatar>
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900">{profileData.fullName}</h2>
-                    {isEditingEmail ? (
-                      <div className="flex gap-2 mt-1">
-                        <Input
-                          type="email"
-                          value={profileData.newEmail}
-                          onChange={(e) => handleInputChange("newEmail", e.target.value)}
-                          placeholder="Nhập email mới"
-                          className="h-8 text-sm"
-                        />
-                        <Button 
-                          size="sm" 
-                          onClick={handleSaveEmail}
-                          className="h-8"
-                        >
-                          Lưu
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => setIsEditingEmail(false)}
-                          className="h-8"
-                        >
-                          Hủy
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <p className="text-gray-500 text-sm">{profileData.email}</p>
-                        <button 
-                          onClick={() => {
-                            setProfileData(prev => ({ ...prev, newEmail: prev.email }))
-                            setIsEditingEmail(true)
-                          }}
-                          className="text-blue-600 text-xs hover:underline"
-                        >
-                          Đổi
-                        </button>
-                      </div>
-                    )}
+                    <p className="text-gray-500">{profileData.email}</p>
                   </div>
                 </div>
+                <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleSaveProfile}>
+                  Chỉnh sửa
+                </Button>
               </div>
             </CardHeader>
 
             <CardContent className="space-y-6">
               {/* Form Fields */}
-              <div className="space-y-4">
-                <div>
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
                   <Label htmlFor="fullName">Họ và tên</Label>
                   <Input
                     id="fullName"
+                    placeholder="Nhập họ và tên"
                     value={profileData.fullName}
                     onChange={(e) => handleInputChange("fullName", e.target.value)}
+                    required
                   />
                 </div>
-                
-                <div>
-                  <Label htmlFor="phoneNumber">Số điện thoại</Label>
+
+                <div className="space-y-2">
+                  <Label htmlFor="nickName">Biệt danh</Label>
                   <Input
-                    id="phoneNumber"
-                    value={profileData.phoneNumber}
-                    onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-                    placeholder="Nhập số điện thoại"
+                    id="nickName"
+                    placeholder="Nhập biệt danh"
+                    value={profileData.nickName}
+                    onChange={(e) => handleInputChange("nickName", e.target.value)}
                   />
                 </div>
-                
-                <div>
-                  <Label htmlFor="changePassword">Đổi mật khẩu</Label>
-                  <Input
-                    id="changePassword"
-                    type="password"
-                    value={profileData.changePassword}
-                    onChange={(e) => handleInputChange("changePassword", e.target.value)}
-                    placeholder="Nhập mật khẩu mới"
-                  />
+
+                <div className="space-y-2">
+                  <Label htmlFor="gender">Giới tính</Label>
+                  <Select value={profileData.gender} onValueChange={(value) => handleInputChange("gender", value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn giới tính" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="male">Nam</SelectItem>
+                      <SelectItem value="female">Nữ</SelectItem>
+                      <SelectItem value="other">Khác</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      id="email"
-                      type="email"
-                      value={profileData.email}
-                      disabled
-                    />
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => {
-                        setProfileData(prev => ({ ...prev, newEmail: prev.email }))
-                        setIsEditingEmail(true)
-                      }}
-                    >
-                      Đổi email
-                    </Button>
-                  </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="country">Quốc gia</Label>
+                  <Select value={profileData.country} onValueChange={(value) => handleInputChange("country", value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn quốc gia" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="vietnam">Việt Nam</SelectItem>
+                      <SelectItem value="usa">Hoa Kỳ</SelectItem>
+                      <SelectItem value="japan">Nhật Bản</SelectItem>
+                      <SelectItem value="korea">Hàn Quốc</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                
-                <div>
-                  <Label htmlFor="dateOfBirth">Ngày sinh</Label>
-                  <Input
-                    id="dateOfBirth"
-                    type="date"
-                    value={profileData.dateOfBirth}
-                    onChange={(e) => handleInputChange("dateOfBirth", e.target.value)}
-                  />
-                </div>
-                
-                <div>
+
+                <div className="space-y-2">
                   <Label htmlFor="language">Ngôn ngữ</Label>
-                  <Select
-                    value={profileData.language}
-                    onValueChange={(value) => handleInputChange("language", value)}
-                  >
+                  <Select value={profileData.language} onValueChange={(value) => handleInputChange("language", value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Chọn ngôn ngữ" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vi">Tiếng Việt</SelectItem>
-                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="vi">🇻🇳 Tiếng Việt</SelectItem>
+                      <SelectItem value="en">🇺🇸 English</SelectItem>
+                      <SelectItem value="ja">🇯🇵 日本語</SelectItem>
+                      <SelectItem value="ko">🇰🇷 한국어</SelectItem>
+                      <SelectItem value="th">🇹🇭 ไทย</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="timeZone">Múi giờ</Label>
+                  <Select value={profileData.timeZone} onValueChange={(value) => handleInputChange("timeZone", value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Chọn múi giờ" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="asia/ho_chi_minh">GMT+7 (Hồ Chí Minh)</SelectItem>
+                      <SelectItem value="asia/bangkok">GMT+7 (Bangkok)</SelectItem>
+                      <SelectItem value="asia/jakarta">GMT+7 (Jakarta)</SelectItem>
+                      <SelectItem value="asia/tokyo">GMT+9 (Tokyo)</SelectItem>
+                      <SelectItem value="asia/seoul">GMT+9 (Seoul)</SelectItem>
+                      <SelectItem value="asia/shanghai">GMT+8 (Shanghai)</SelectItem>
+                      <SelectItem value="asia/singapore">GMT+8 (Singapore)</SelectItem>
+                      <SelectItem value="america/new_york">GMT-5 (New York)</SelectItem>
+                      <SelectItem value="europe/london">GMT+0 (London)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </form>
+
+              {/* Email Section */}
+              <div className="space-y-4 pt-6 border-t border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900">Địa chỉ email của tôi</h3>
+
+                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                  <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
+                    <Mail className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{profileData.email}</p>
+                    <p className="text-sm text-gray-500">1 tháng trước</p>
+                  </div>
+                  <Button variant="ghost" size="sm" className="text-blue-600">
+                    Chính
+                  </Button>
+                </div>
+
+                <Button variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 bg-transparent">
+                  <Plus className="w-4 h-4 mr-2" />
+                  cập nhật email
+                </Button>
               </div>
 
               {/* Action Buttons */}

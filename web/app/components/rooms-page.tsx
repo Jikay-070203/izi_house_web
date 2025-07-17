@@ -40,7 +40,7 @@ interface Room {
   rating: number
   reviews: number
   views: number
-  category: "studio" | "1bedroom" | "ktx" | "loft" | "cao-cap" | "1phongngu" | "2phongngu"
+  category: "studio" | "1bedroom" | "ktx" | "loft"
   amenities: string[]
   owner: {
     name: string
@@ -72,229 +72,195 @@ export default function RoomsPage() {
   const allRooms: Room[] = [
     {
       id: "1",
-      title: "Chung cư cao cấp Quận 1 - View sông Sài Gòn",
-      price: "12 triệu/tháng",
-      location: "Quận 1, TP.HCM",
-      area: "45 m²",
-      bedrooms: 1,
-      bathrooms: 1,
-      image: "/rooms/1.jpg",
-      images: [
-        "/rooms/1.jpg",
-        "/rooms/2.jpg",
-        "/rooms/3.jpg",
-        "/rooms/4.jpg",
-        "/rooms/5.jpg"
-      ],
-      isHot: true,
-      isVerified: true,
-      rating: 4.9,
-      reviews: 36,
-      views: 2450,
-      category: "cao-cap",
-      amenities: ["Wifi tốc độ cao", "Điều hòa", "Tủ lạnh", "Máy giặt riêng", "Tủ quần áo", "Bảo vệ 24/7"],
-      owner: {
-        name: "Anh Minh",
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-    },
-    {
-      id: "2",
-      title: "Studio hiện đại gần Đại học Bách Khoa",
-      price: "4.8 triệu/tháng",
-      location: "Quận Thủ Đức, TP.HCM",
+      title: "Studio hiện đại gần trường ĐH Bách Khoa",
+      price: "4.5 triệu/tháng",
+      location: "Quận Thủ Đức, Hồ Chí Minh",
       area: "25 m²",
       bedrooms: 0,
       bathrooms: 1,
-      image: "/rooms/10.jpg",
+      image: "/images/1.jpg",
       images: [
-        "/rooms/10.jpg",
-        "/rooms/11.jpg",
-        "/rooms/12.jpg",
-        "/rooms/13.jpg",
-        "/rooms/14.jpg"
+        "/images/1.jpg",
+        "/images/2.jpg",
+        "/images/3.jpg",
+        "/images/4.jpg",
+        "/images/5.jpg"
       ],
       isHot: true,
       isVerified: true,
-      rating: 4.7,
-      reviews: 28,
-      views: 1890,
+      rating: 4.8,
+      reviews: 24,
+      views: 1250,
       category: "studio",
-      amenities: ["Wifi miễn phí", "Điều hòa", "Tủ lạnh", "Máy giặt chung", "Chỗ để xe"],
+      amenities: ["Wifi miễn phí", "Điều hòa", "Tủ lạnh", "Máy giặt chung"],
       owner: {
         name: "Chị Lan Anh",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "98%",
       },
+      description: "Studio đầy đủ nội thất, gần trường học, siêu thị, giao thông thuận tiện",
+      availableFrom: "01/01/2025",
     },
     {
-      id: "3",
-      title: "Căn hộ full nội thất Quận 7",
-      price: "7.5 triệu/tháng",
-      location: "Quận 7, TP.HCM",
+      id: "2",
+      title: "Phòng 1PN đầy đủ nội thất Quận 1",
+      price: "8.5 triệu/tháng",
+      location: "Quận 1, TP Hồ Chí Minh",
       area: "35 m²",
       bedrooms: 1,
       bathrooms: 1,
-      image: "/rooms/20.jpg",
+      image: "/images/6.jpg",
       images: [
-        "/rooms/20.jpg",
-        "/rooms/21.jpg",
-        "/rooms/22.jpg",
-        "/rooms/23.jpg",
-        "/rooms/24.jpg"
+        "/images/6.jpg",
+        "/images/7.jpg",
+        "/images/8.jpg",
+        "/images/9.jpg",
+        "/images/10.jpg",
+        "/images/11.jpg"
       ],
-      isHot: true,
       isFeatured: true,
       isVerified: true,
-      rating: 4.8,
-      reviews: 42,
-      views: 3200,
-      category: "1phongngu",
-      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt riêng", "Tủ quần áo", "Bếp từ"],
+      rating: 4.9,
+      reviews: 18,
+      views: 890,
+      category: "1bedroom",
+      amenities: ["Wifi miễn phí", "Điều hòa", "Bếp riêng", "Ban công", "Thang máy"],
       owner: {
-        name: "Anh Tuấn",
+        name: "Anh Minh",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "95%",
       },
+      description: "Căn hộ 1 phòng ngủ cao cấp tại trung tâm Quận 1, view đẹp",
+      availableFrom: "15/01/2025",
+    },
+    {
+      id: "3",
+      title: "KTX cao cấp dành cho sinh viên",
+      price: "2.3 triệu/tháng",
+      location: "Quận Bình Thạnh, TP.HCM",
+      area: "15 m²",
+      bedrooms: 1,
+      bathrooms: 1,
+      image: "/images/12.jpg",
+      images: [
+        "/images/12.jpg",
+        "/images/13.jpg",
+        "/images/14.jpg",
+        "/images/15.jpg",
+        "/images/16.jpg"
+      ],
+      isVerified: false,
+      rating: 4.5,
+      reviews: 32,
+      views: 650,
+      category: "ktx",
+      amenities: ["Wifi miễn phí", "Điều hòa", "Bảo vệ 24/7", "Giặt ủi"],
+      owner: {
+        name: "Cô Mai",
+        avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: false,
+        responseRate: "87%",
+      },
+      description: "KTX hiện đại với đầy đủ tiện nghi, an ninh tốt",
+      availableFrom: "Ngay",
     },
     {
       id: "4",
-      title: "Căn hộ mới xây gần sân bay Tân Sơn Nhất",
-      price: "5.2 triệu/tháng",
-      location: "Quận Tân Bình, TP.HCM",
-      area: "28 m²",
+      title: "Phòng gác xép view đẹp Quận 3",
+      price: "3.8 triệu/tháng",
+      location: "Quận 3, TP.HCM",
+      area: "20 m²",
       bedrooms: 1,
       bathrooms: 1,
-      image: "/rooms/30.jpg",
+      image: "/images/17.jpg",
       images: [
-        "/rooms/30.jpg",
-        "/rooms/31.jpg",
-        "/rooms/32.jpg",
-        "/rooms/33.jpg",
-        "/rooms/34.jpg"
+        "/images/17.jpg",
+        "/images/18.jpg",
+        "/images/19.jpg",
+        "/images/20.jpg"
       ],
       isHot: true,
       isVerified: true,
       rating: 4.6,
-      reviews: 19,
-      views: 1450,
-      category: "1phongngu",
-      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt chung", "Chỗ để xe máy"],
+      reviews: 15,
+      views: 420,
+      category: "loft",
+      amenities: ["Wifi miễn phí", "Điều hòa", "Cửa sổ lớn", "Yên tĩnh"],
       owner: {
         name: "Chị Hương",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "92%",
       },
+      description: "Phòng gác xép thiết kế độc đáo, không gian thoáng mát",
+      availableFrom: "20/01/2025",
     },
     {
       id: "5",
-      title: "Căn hộ mini view đẹp Quận 2",
-      price: "6.8 triệu/tháng",
-      location: "Quận 2, TP.HCM",
-      area: "32 m²",
-      bedrooms: 1,
+      title: "Studio luxury gần sân bay",
+      price: "6.2 triệu/tháng",
+      location: "Quận Tân Bình, TP.HCM",
+      area: "30 m²",
+      bedrooms: 0,
       bathrooms: 1,
-      image: "/rooms/40.jpg",
+      image: "/images/21.jpg",
       images: [
-        "/rooms/40.jpg",
-        "/rooms/41.jpg",
-        "/rooms/42.jpg",
-        "/rooms/43.jpg",
-        "/rooms/44.jpg"
+        "/images/21.jpg",
+        "/images/22.jpg",
+        "/images/23.jpg",
+        "/images/24.jpg",
+        "/images/25.jpg"
       ],
-      isHot: true,
       isFeatured: true,
       isVerified: true,
-      rating: 4.9,
-      reviews: 31,
-      views: 2680,
-      category: "1phongngu",
-      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt riêng", "Ban công", "Hồ bơi"],
+      rating: 4.7,
+      reviews: 28,
+      views: 980,
+      category: "studio",
+      amenities: ["Wifi miễn phí", "Điều hòa", "Bếp riêng", "Gym", "Hồ bơi"],
       owner: {
-        name: "Anh Dũng",
+        name: "Anh Tuấn",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "99%",
       },
+      description: "Studio cao cấp với đầy đủ tiện ích, gần sân bay Tân Sơn Nhất",
+      availableFrom: "10/01/2025",
     },
     {
       id: "6",
-      title: "Chung cư mini gần ĐH Kinh Tế",
-      price: "3.9 triệu/tháng",
-      location: "Quận 3, TP.HCM",
-      area: "20 m²",
-      bedrooms: 0,
-      bathrooms: 1,
-      image: "/rooms/50.jpg",
-      images: [
-        "/rooms/50.jpg",
-        "/rooms/51.jpg",
-        "/rooms/52.jpg",
-        "/rooms/53.jpg"
-      ],
-      isHot: true,
-      isVerified: true,
-      rating: 4.5,
-      reviews: 22,
-      views: 1670,
-      category: "studio",
-      amenities: ["Wifi", "Điều hòa", "Tủ lạnh nhỏ", "Máy giặt chung"],
-      owner: {
-        name: "Cô Hà",
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-    },
-    {
-      id: "7",
-      title: "Căn hộ full nội thất Quận Bình Thạnh",
-      price: "8.5 triệu/tháng",
-      location: "Quận Bình Thạnh, TP.HCM",
-      area: "38 m²",
+      title: "Căn hộ 1PN view sông",
+      price: "12.0 triệu/tháng",
+      location: "Quận 2, TP.HCM",
+      area: "45 m²",
       bedrooms: 1,
       bathrooms: 1,
-      image: "/rooms/60.jpg",
+      image: "/images/26.jpg",
       images: [
-        "/rooms/60.jpg",
-        "/rooms/61.jpg",
-        "/rooms/62.jpg",
-        "/rooms/63.jpg",
-        "/rooms/64.jpg"
+        "/images/26.jpg",
+        "/images/27.jpg",
+        "/images/28.jpg",
+        "/images/29.jpg",
+        "/images/30.jpg",
+        "/images/31.jpg"
       ],
-      isHot: true,
       isFeatured: true,
       isVerified: true,
-      rating: 4.8,
-      reviews: 38,
-      views: 2980,
-      category: "1phongngu",
-      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt riêng", "Bếp từ", "Máy sấy"],
-      owner: {
-        name: "Chị Ngọc",
-        avatar: "/placeholder.svg?height=40&width=40",
-      },
-    },
-    {
-      id: "8",
-      title: "Căn hộ mới 100% Quận Phú Nhuận",
-      price: "9.2 triệu/tháng",
-      location: "Quận Phú Nhuận, TP.HCM",
-      area: "42 m²",
-      bedrooms: 2,
-      bathrooms: 1,
-      image: "/rooms/70.jpg",
-      images: [
-        "/rooms/70.jpg",
-        "/rooms/71.jpg",
-        "/rooms/72.jpg",
-        "/rooms/73.jpg",
-        "/rooms/74.jpg"
-      ],
-      isHot: true,
-      isVerified: true,
       rating: 4.9,
-      reviews: 45,
-      views: 3560,
-      category: "2phongngu",
-      amenities: ["Wifi", "Điều hòa", "Tủ lạnh lớn", "Máy giặt riêng", "Bếp từ", "Máy sấy", "Hồ bơi"],
+      reviews: 12,
+      views: 1100,
+      category: "1bedroom",
+      amenities: ["Wifi miễn phí", "Điều hòa", "Ban công view sông", "Thang máy", "Bảo vệ 24/7"],
       owner: {
-        name: "Anh Hải",
+        name: "Chị Thảo",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "96%",
       },
+      description: "Căn hộ cao cấp view sông Sài Gòn, nội thất sang trọng",
+      availableFrom: "05/02/2025",
     },
   ]
 
@@ -318,21 +284,6 @@ export default function RoomsPage() {
       title: "Phòng Gác Xép",
       description: "Không gian sống độc đáo với thiết kế loft, phù hợp cho người yêu thích sự khác biệt",
       count: allRooms.filter((r) => r.category === "loft").length,
-    },
-    "cao-cap": {
-      title: "Cao Cấp",
-      description: "Căn hộ cao cấp với đầy đủ tiện ích, phù hợp cho người yêu thích sự sang trọng",
-      count: allRooms.filter((r) => r.category === "cao-cap").length,
-    },
-    "1phongngu": {
-      title: "1 Phòng Ngủ",
-      description: "Căn hộ 1 phòng ngủ riêng biệt, thoải mái cho cặp đôi hoặc gia đình nhỏ",
-      count: allRooms.filter((r) => r.category === "1phongngu").length,
-    },
-    "2phongngu": {
-      title: "2 Phòng Ngủ",
-      description: "Căn hộ 2 phòng ngủ riêng biệt, thoải mái cho gia đình nhỏ",
-      count: allRooms.filter((r) => r.category === "2phongngu").length,
     },
   }
 
@@ -461,12 +412,9 @@ export default function RoomsPage() {
                 <SelectContent>
                   <SelectItem value="all">Tất cả loại phòng</SelectItem>
                   <SelectItem value="studio">Phòng Studio</SelectItem>
-                  <SelectItem value="1bedroom">1 Phòng Ngủ</SelectItem>
+                  <SelectItem value="1bedroom">1 Phòng ngủ</SelectItem>
                   <SelectItem value="ktx">KTX & Sleepbox</SelectItem>
-                  <SelectItem value="loft">Phòng Gác Xép</SelectItem>
-                  <SelectItem value="cao-cap">Cao Cấp</SelectItem>
-                  <SelectItem value="1phongngu">1 Phòng Ngủ</SelectItem>
-                  <SelectItem value="2phongngu">2 Phòng Ngủ</SelectItem>
+                  <SelectItem value="loft">Phòng gác xép</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -561,7 +509,7 @@ export default function RoomsPage() {
                       className={`object-cover ${viewMode === "list" ? "w-full h-full" : "w-full h-48"}`}
                       onError={(e) => {
                         if (e.currentTarget.src.indexOf('room-placeholder.jpg') === -1) {
-                          e.currentTarget.src = "/rooms/room-placeholder.jpg";
+                          e.currentTarget.src = "/images/room-placeholder.jpg";
                         } else {
                           e.currentTarget.src = "/placeholder.jpg";
                         }
