@@ -3,13 +3,13 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'export',
   images: {
-    unoptimized: true,
+    unoptimized: true
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -17,11 +17,11 @@ const nextConfig = {
         ...config.resolve.fallback,
         fs: false,
         net: false,
-        tls: false,
+        tls: false
       };
     }
     return config;
-  },
+  }
 };
 
 export default nextConfig;

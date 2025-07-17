@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "deploy": "pnpm run build && wrangler pages deploy .next/standalone"
+    "build": "next build && next export",
+    "start": "serve out",
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/core": "^0.40.0",
