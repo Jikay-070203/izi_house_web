@@ -99,6 +99,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Căn hộ cao cấp với thiết kế hiện đại, đầy đủ tiện nghi, view sông Sài Gòn tuyệt đẹp. An ninh 24/7.",
+      availableFrom: "Ngay lập tức"
     },
     {
       id: "2",
@@ -129,6 +131,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Phòng studio nhỏ gọn, hiện đại, gần các trường đại học lớn. Thích hợp cho sinh viên hoặc người đi làm.",
+      availableFrom: "2025-08-01"
     },
     {
       id: "3",
@@ -160,6 +164,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Căn hộ 1 phòng ngủ đầy đủ nội thất, khu dân cư an ninh, gần trung tâm thương mại.",
+      availableFrom: "2025-07-25"
     },
     {
       id: "4",
@@ -190,6 +196,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Căn hộ mới, tiện lợi di chuyển đến sân bay, khu vực yên tĩnh, thoáng mát.",
+      availableFrom: "Ngay lập tức"
     },
     {
       id: "5",
@@ -221,6 +229,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Căn hộ mini với ban công view đẹp, đầy đủ tiện ích nội khu, gần các quán cafe và nhà hàng.",
+      availableFrom: "2025-08-10"
     },
     {
       id: "6",
@@ -250,6 +260,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Phòng chung cư mini giá cả phải chăng, gần Đại học Kinh Tế, phù hợp cho sinh viên.",
+      availableFrom: "2025-07-20"
     },
     {
       id: "7",
@@ -281,6 +293,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Căn hộ 1 phòng ngủ đầy đủ nội thất, khu vực trung tâm Bình Thạnh, giao thông thuận tiện.",
+      availableFrom: "Ngay lập tức"
     },
     {
       id: "8",
@@ -311,6 +325,8 @@ export default function RoomsPage() {
         isVerified: true,
         responseRate: "1 giờ",
       },
+      description: "Căn hộ 2 phòng ngủ mới hoàn toàn, thiết kế hiện đại, tiện ích cao cấp, gần công viên.",
+      availableFrom: "2025-09-01"
     },
   ]
 
