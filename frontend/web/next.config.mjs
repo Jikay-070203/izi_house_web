@@ -2,9 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    // unoptimized: true,
+    // unoptimized: true, // Dòng này phải được xóa hoặc ghi chú lại
   },
-  // output: 'export', // Commented out as requested
+  // output: 'export',
 };
 
 export default nextConfig;
