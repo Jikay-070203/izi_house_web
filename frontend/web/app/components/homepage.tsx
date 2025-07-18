@@ -57,6 +57,7 @@ interface PropertyListing {
   reviews: number
   category: "studio" | "1bedroom" | "ktx" | "loft" | "cao-cap" | "1phongngu" | "2phongngu"
   amenities: string[]
+  description?: string // <--- THÊM DÒNG NÀY VÀO ĐÂY
 }
 
 interface Project {
