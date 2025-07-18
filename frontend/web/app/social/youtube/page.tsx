@@ -1,5 +1,10 @@
-import YouTubePage from "../../components/social/youtube-page"
+"use client"
 
-export default function YouTube() {
-  return <YouTubePage />
+export default function YouTubePage() {
+  return (
+    <div>
+      <h1>YouTube Page</h1>
+      <p>This is a placeholder for the YouTube social page.</p>
+    </div>
+  )
 }
