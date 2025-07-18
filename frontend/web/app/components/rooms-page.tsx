@@ -96,6 +96,8 @@ export default function RoomsPage() {
       owner: {
         name: "Anh Minh",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -124,6 +126,8 @@ export default function RoomsPage() {
       owner: {
         name: "Chị Lan Anh",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -153,6 +157,8 @@ export default function RoomsPage() {
       owner: {
         name: "Anh Tuấn",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -181,6 +187,8 @@ export default function RoomsPage() {
       owner: {
         name: "Chị Hương",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -210,6 +218,8 @@ export default function RoomsPage() {
       owner: {
         name: "Anh Dũng",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -237,6 +247,8 @@ export default function RoomsPage() {
       owner: {
         name: "Cô Hà",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -266,6 +278,8 @@ export default function RoomsPage() {
       owner: {
         name: "Chị Ngọc",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
     {
@@ -294,6 +308,8 @@ export default function RoomsPage() {
       owner: {
         name: "Anh Hải",
         avatar: "/placeholder.svg?height=40&width=40",
+        isVerified: true,
+        responseRate: "1 giờ",
       },
     },
   ]
