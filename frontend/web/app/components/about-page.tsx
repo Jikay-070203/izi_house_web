@@ -26,30 +26,9 @@ import {
   Star,
 } from "lucide-react"
 import Link from "next/link"
-import { ReactNode } from "react"
-
-interface Milestone {
-  year: string
-  title: string
-  description: string
-  icon: ReactNode
-}
-
-interface TeamMember {
-  name: string
-  position: string
-  description: string
-  image: string
-}
-
-interface Achievement {
-  title: string
-  description: string
-  icon: ReactNode
-}
 
 export default function AboutPage() {
-  const milestones: Milestone[] = [
+  const milestones = [
     {
       year: "2020",
       title: "Thành lập IZI HOUSE",
@@ -82,42 +61,58 @@ export default function AboutPage() {
     },
   ]
 
-  const teamMembers: TeamMember[] = [
-    {
-      name: "Nguyễn Văn An",
-      position: "CEO & Founder",
-      description: "15 năm kinh nghiệm trong lĩnh vực bất động sản và công nghệ",
-      image: "/placeholder.svg?height=200&width=200",
+  const teamMembers = {
+    ceo: {
+      name: "Nguyen Thanh Hoa",
+      position: "CEO – Project Manager & Developer",
+      description: "Project Management – CEO, Developer. Expected Deliverables: A complete business plan, Signed partnership agreements with strategic partners.",
+      image: "/profile/hoa_avatar@6x.png"
     },
-    {
-      name: "Trần Thị Bình",
-      position: "CTO",
-      description: "Chuyên gia công nghệ với kinh nghiệm tại các tập đoàn lớn",
-      image: "/placeholder.svg?height=200&width=200",
-    },
-    {
-      name: "Lê Minh Cường",
-      position: "Head of Marketing",
-      description: "10 năm kinh nghiệm marketing trong ngành bất động sản",
-      image: "/placeholder.svg?height=200&width=200",
-    },
-    {
-      name: "Phạm Thu Dung",
-      position: "Head of Operations",
-      description: "Chuyên gia vận hành với nền tảng quản trị kinh doanh",
-      image: "/placeholder.svg?height=200&width=200",
-    },
-  ]
+    development: [
+      {
+        name: "Tran Hoang Long",
+        position: "Backend Developer, Tech lead",
+        description: "Expected Deliverables: Build the software core. Manage & maintain the database.",
+        image: "/profile/long_avatar@6x.png"
+      },
+      {
+        name: "Pham Nguyen Khanh Minh",
+        position: "AI Model Developer/Frontend Developer",
+        description: "Expected Deliverables: Design and develop AI Agent. Develop UX/UI.",
+        image: "/profile/minh_avatar@6x.png"
+      },
+      {
+        name: "Lam Thanh Nhan",
+        position: "Designer/Social Content",
+        description: "Expected Deliverables: Develop a cohesive brand visual identity. Design user-friendly, consistent interfaces.",
+        image: "/profile/nhan_avatar@6x.png"
+      }
+    ],
+    business: [
+      {
+        name: "Nguyen Le Trong Phuc",
+        position: "Financial Lead/Operations",
+        description: "Expected Deliverables: Analyze and define sustainable financial goals. Manages finances & budgets. Ensures smooth daily operations. Handles legal & administrative tasks.",
+        image: "/profile/phuc_avatar@6x.png"
+      },
+      {
+        name: "Hoang Quynh Trang",
+        position: "Chief Marketing Officer/Sale leads",
+        description: "Expected Deliverables: Strengthen brand visibility and positioning. Conduct market and competitor analysis and STP. Business Environment Analysis.",
+        image: "/profile/trang_avatar@6x.png"
+      }
+    ]
+  }
 
-  const achievements: Achievement[] = [
+  const achievements = [
     {
-      title: "Nền tảng BĐS #1 Việt Nam",
-      description: "Được bình chọn bởi hơn 1 triệu người dùng",
+      title: "Top 10 Nền tảng BĐS",
+      description: "Được vinh danh bởi VNExpress",
       icon: <Award className="w-8 h-8 text-yellow-600" />,
     },
     {
-      title: "Top 10 Startup Việt Nam 2024",
-      description: "Vinh danh bởi Vietnam Startup Awards",
+      title: "Giải thưởng Đổi mới",
+      description: "Công nghệ tiên tiến nhất 2023",
       icon: <Star className="w-8 h-8 text-purple-600" />,
     },
     {
@@ -382,23 +377,84 @@ export default function AboutPage() {
             <p className="text-gray-600">Những con người tài năng đang dẫn dắt IZI HOUSE tiến về phía trước</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden">
-                    <img
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-medium mb-3">{member.position}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{member.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="space-y-16">
+            {/* CEO Card - Centered at the top */}
+            <div className="flex justify-center px-4">
+              <div className="w-full max-w-lg">
+                <Card className="text-center hover:shadow-lg transition-shadow border-2 border-blue-50">
+                  <CardContent className="p-8">
+                    <div className="w-36 h-36 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full mx-auto mb-6 overflow-hidden border-4 border-white shadow-md">
+                      <img
+                        src={teamMembers.ceo.image || "/placeholder.svg"}
+                        alt={teamMembers.ceo.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{teamMembers.ceo.name}</h3>
+                    <p className="text-blue-600 font-medium text-lg mb-4">{teamMembers.ceo.position}</p>
+                    <p className="text-gray-600 leading-relaxed">{teamMembers.ceo.description}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Development Team */}
+            <div className="mt-16">
+              <div className="text-center mb-10">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Đội Phát Triển</h3>
+                <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full"></div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+                {teamMembers.development.map((member, index) => (
+                  <Card key={`dev-${index}`} className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                    <CardContent className="p-6 flex-1 flex flex-col">
+                      <div className="w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full mx-auto mb-5 overflow-hidden border-4 border-white shadow-md">
+                        <img
+                          src={member.image || "/placeholder.svg"}
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-800 mb-1">{member.name}</h3>
+                        <p className="text-blue-600 font-medium mb-3">{member.position}</p>
+                        <p className="text-gray-600 text-sm leading-relaxed">{member.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Business Team */}
+            <div className="mt-20">
+              <div className="text-center mb-10">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">Đội Kinh Doanh</h3>
+                <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full"></div>
+              </div>
+              <div className="max-w-4xl mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {teamMembers.business.map((member, index) => (
+                    <Card key={`biz-${index}`} className="text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                      <CardContent className="p-6 flex-1 flex flex-col">
+                        <div className="w-28 h-28 bg-gradient-to-br from-gray-50 to-gray-100 rounded-full mx-auto mb-5 overflow-hidden border-4 border-white shadow-md">
+                          <img
+                            src={member.image || "/placeholder.svg"}
+                            alt={member.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-gray-800 mb-1">{member.name}</h3>
+                          <p className="text-blue-600 font-medium mb-3">{member.position}</p>
+                          <p className="text-gray-600 text-sm leading-relaxed">{member.description}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -542,5 +598,5 @@ export default function AboutPage() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

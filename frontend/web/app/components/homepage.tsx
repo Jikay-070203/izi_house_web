@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -36,6 +36,10 @@ import {
   Tag,
 } from "lucide-react"
 import Link from "next/link"
+import useEmblaCarousel from 'embla-carousel-react'
+import Autoplay from 'embla-carousel-autoplay'
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 interface PropertyListing {
   id: string
@@ -45,8 +49,14 @@ interface PropertyListing {
   area: string
   bedrooms: number
   image: string
+  images: string[]
   isHot?: boolean
-  category: "studio" | "1bedroom" | "ktx" | "loft" | "apartment" | "house"
+  isFeatured?: boolean
+  isVerified?: boolean
+  rating: number
+  reviews: number
+  category: "studio" | "1bedroom" | "ktx" | "loft" | "cao-cap" | "1phongngu" | "2phongngu"
+  amenities: string[]
 }
 
 interface Project {
@@ -69,176 +79,226 @@ interface Notification {
 }
 
 export default function Homepage() {
+  const { data: session, status } = useSession()
   const [searchTab, setSearchTab] = useState("mua-ban")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: "1",
-      title: "Ưu đãi đặc biệt",
-      message: "Giảm giá 30% cho căn hộ cao cấp - Chỉ còn 3 ngày!",
-      type: "promotion",
-      time: "2 giờ trước",
-      isRead: false,
-      icon: <Percent className="w-4 h-4 text-red-500" />,
-    },
-    {
-      id: "2",
-      title: "Chương trình mới",
-      message: "Ra mắt gói VIP cho người đăng tin - Miễn phí 1 tháng đầu",
-      type: "program",
-      time: "5 giờ trước",
-      isRead: false,
-      icon: <Gift className="w-4 h-4 text-blue-500" />,
-    },
-    {
-      id: "3",
-      title: "Sự kiện đặc biệt",
-      message: "Triển lãm bất động sản 2025 - Đăng ký tham gia ngay",
-      type: "program",
-      time: "1 ngày trước",
-      isRead: true,
-      icon: <Calendar className="w-4 h-4 text-green-500" />,
-    },
-    {
-      id: "4",
-      title: "Flash Sale",
-      message: "Giảm 50% phí đăng tin VIP trong 24h - Nhanh tay!",
-      type: "promotion",
-      time: "2 ngày trước",
-      isRead: true,
-      icon: <Tag className="w-4 h-4 text-orange-500" />,
-    },
+  const [randomImages, setRandomImages] = useState<string[]>([])
+  const [unreadCount, setUnreadCount] = useState<number>(3)
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    Autoplay({ delay: 5000, stopOnInteraction: false })
   ])
+  const [selectedPromoIndex, setSelectedPromoIndex] = useState(0)
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length
+  const scrollTo = useCallback((index: number) => {
+    if (!emblaApi) return
+    emblaApi.scrollTo(index)
+  }, [emblaApi])
 
-  const markAsRead = (id: string) => {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)))
-  }
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return
+    setSelectedPromoIndex(emblaApi.selectedScrollSnap())
+  }, [emblaApi])
 
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
-  }
+  useEffect(() => {
+    if (!emblaApi) return
+    onSelect()
+    setScrollSnaps(emblaApi.scrollSnapList())
+    emblaApi.on('select', onSelect)
+    return () => {
+      emblaApi.off('select', onSelect)
+    }
+  }, [emblaApi, onSelect])
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev()
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext()
+  }, [emblaApi])
+
+  const promotions = [
+    {
+      id: 1,
+      title: "Ưu đãi đặc biệt",
+      description: "Phòng trọ tại quận 1 với đầy đủ tiện nghi, giá tốt nhất thị trường.",
+      image: "/banner/izi_house.png",
+      buttonText: "Xem chi tiết",
+      buttonLink: "https://www.facebook.com/profile.php?id=61577216990159",
+      target: "_blank"
+    },
+    {
+      id: 2,
+      title: "Trải nghiệm mẫu miễn phí",
+      description: "Đặt lịch xem nhà và nhận ngay voucher 1 triệu đồng khi ký hợp đồng trong tháng này.",
+      image: "/banner/goi_dang_tin.png",
+      buttonText: "Xem ưu đãi",
+      buttonLink: "/promotions",
+      target: "_self"
+    },
+    {
+      id: 3,
+      title: "Nhận báo giá ưu đãi",
+      description: "Đăng ký nhận báo giá ưu đãi đặc biệt dành riêng cho khách hàng mới.",
+      image: "/banner/wifi.png",
+      buttonText: "Đăng ký ngay",
+      buttonLink: "https://fpt.vn/goi-gia-dinh-sieu-tien-ich?utm_source=bannerfptvn",
+      target: "_blank"
+    },
+    {
+      id: 4,
+      title: "Nhận báo giá ưu đãi",
+      description: "Đăng ký nhận báo giá ưu đãi đặc biệt dành riêng cho khách hàng mới.",
+      image: "/banner/van_chuyen.png",
+      buttonText: "Đăng ký ngay",
+      buttonLink: "https://thanhhungvn.vn/",
+      target: "_blank"
+    },
+  ]
 
   const allProperties: PropertyListing[] = [
     {
       id: "1",
-      title: "Studio hiện đại gần trường ĐH Bách Khoa",
-      price: "4.5 triệu/tháng",
-      location: "Quận Thủ Đức, Hồ Chí Minh",
-      area: "25 m²",
-      bedrooms: 0,
-      image: "/images/1.jpg",
+      title: "Chung cư cao cấp Quận 1 - View sông Sài Gòn",
+      price: "12 triệu/tháng",
+      location: "Quận 1, TP.HCM",
+      area: "45 m²",
+      bedrooms: 1,
+      image: "/rooms/1.jpg",
+      images: [
+        "/rooms/1.jpg",
+        "/rooms/2.jpg",
+        "/rooms/3.jpg",
+        "/rooms/4.jpg",
+        "/rooms/5.jpg"
+      ],
       isHot: true,
-      category: "studio",
+      isFeatured: true,
+      isVerified: true,
+      rating: 4.9,
+      reviews: 36,
+      category: "cao-cap",
+      amenities: ["Wifi tốc độ cao", "Điều hòa", "Tủ lạnh", "Máy giặt riêng"]
     },
     {
       id: "2",
-      title: "Phòng 1PN đầy đủ nội thất Quận 1",
-      price: "8.5 triệu/tháng",
-      location: "Quận 1, TP Hồ Chí Minh",
+      title: "Căn hộ full nội thất Quận 7",
+      price: "7.5 triệu/tháng",
+      location: "Quận 7, TP.HCM",
       area: "35 m²",
       bedrooms: 1,
-      image: "/images/6.jpg",
-      category: "1bedroom",
+      image: "/rooms/20.jpg",
+      images: [
+        "/rooms/20.jpg",
+        "/rooms/21.jpg",
+        "/rooms/22.jpg",
+        "/rooms/23.jpg"
+      ],
+      isHot: true,
+      isFeatured: true,
+      isVerified: true,
+      rating: 4.8,
+      reviews: 42,
+      category: "1phongngu",
+      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt riêng"]
     },
     {
       id: "3",
-      title: "KTX cao cấp dành cho sinh viên",
-      price: "2.3 triệu/tháng",
-      location: "Quận Bình Thạnh, TP.HCM",
-      area: "15 m²",
-      bedrooms: 1,
-      image: "/images/12.jpg",
-      category: "ktx",
+      title: "Studio hiện đại gần ĐH Bách Khoa",
+      price: "4.8 triệu/tháng",
+      location: "Quận Thủ Đức, TP.HCM",
+      area: "25 m²",
+      bedrooms: 0,
+      image: "/rooms/10.jpg",
+      images: [
+        "/rooms/10.jpg",
+        "/rooms/11.jpg",
+        "/rooms/12.jpg",
+        "/rooms/13.jpg"
+      ],
+      isHot: true,
+      isVerified: true,
+      rating: 4.7,
+      reviews: 28,
+      category: "studio",
+      amenities: ["Wifi miễn phí", "Điều hòa", "Tủ lạnh"]
     },
     {
       id: "4",
-      title: "Phòng gác xép view đẹp Quận 3",
-      price: "3.8 triệu/tháng",
-      location: "Quận 3, TP.HCM",
-      area: "20 m²",
+      title: "Căn hộ mới xây gần sân bay Tân Sơn Nhất",
+      price: "5.2 triệu/tháng",
+      location: "Quận Tân Bình, TP.HCM",
+      area: "28 m²",
       bedrooms: 1,
-      image: "/images/17.jpg",
-      category: "loft",
+      image: "/rooms/30.jpg",
+      images: [
+        "/rooms/30.jpg",
+        "/rooms/31.jpg",
+        "/rooms/32.jpg",
+        "/rooms/33.jpg"
+      ],
+      isHot: true,
+      isVerified: true,
+      rating: 4.6,
+      reviews: 19,
+      category: "1phongngu",
+      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt chung"]
     },
     {
       id: "5",
-      title: "Studio luxury gần sân bay",
-      price: "6.2 triệu/tháng",
-      location: "Quận Tân Bình, TP.HCM",
-      area: "30 m²",
-      bedrooms: 0,
-      image: "/images/21.jpg",
+      title: "Căn hộ mini view đẹp Quận 2",
+      price: "6.8 triệu/tháng",
+      location: "Quận 2, TP.HCM",
+      area: "32 m²",
+      bedrooms: 1,
+      image: "/rooms/40.jpg",
+      images: [
+        "/rooms/40.jpg",
+        "/rooms/41.jpg",
+        "/rooms/42.jpg",
+        "/rooms/43.jpg"
+      ],
       isHot: true,
-      category: "studio",
+      isFeatured: true,
+      isVerified: true,
+      rating: 4.9,
+      reviews: 31,
+      category: "1phongngu",
+      amenities: ["Wifi", "Điều hòa", "Tủ lạnh", "Máy giặt riêng", "Ban công"]
     },
     {
       id: "6",
-      title: "Căn hộ 1PN view sông",
-      price: "12.0 triệu/tháng",
-      location: "Quận 2, TP.HCM",
-      area: "45 m²",
-      bedrooms: 1,
-      image: "/images/26.jpg",
-      category: "1bedroom",
-    },
-    {
-      id: "7",
-      title: "Sleepbox hiện đại 24/7",
-      price: "1.8 triệu/tháng",
-      location: "Quận 7, TP.HCM",
-      area: "12 m²",
-      bedrooms: 1,
-      image: "/images/31.jpg",
-      category: "ktx",
-    },
-    {
-      id: "8",
-      title: "Loft space sáng tạo",
-      price: "5.5 triệu/tháng",
-      location: "Quận 1, TP.HCM",
-      area: "28 m²",
-      bedrooms: 1,
-      image: "/images/36.jpg",
-      category: "loft",
-    },
+      title: "Chung cư mini gần ĐH Kinh Tế",
+      price: "3.9 triệu/tháng",
+      location: "Quận 3, TP.HCM",
+      area: "20 m²",
+      bedrooms: 0,
+      image: "/rooms/50.jpg",
+      images: [
+        "/rooms/50.jpg",
+        "/rooms/51.jpg",
+        "/rooms/52.jpg"
+      ],
+      isHot: true,
+      isVerified: true,
+      rating: 4.5,
+      reviews: 22,
+      category: "studio",
+      amenities: ["Wifi", "Điều hòa", "Tủ lạnh nhỏ"]
+    }
   ]
 
-  const projects: Project[] = [
-    {
-      id: "1",
-      name: "Saigon Ville",
-      location: "Quận 9, Hồ Chí Minh",
-      description: "Khu đô thị Saigon Ville Bình Trưng Đông với hạ tầng hiện đại",
-      image: "/placeholder.svg?height=300&width=400",
-      rating: 4.5,
-    },
-    {
-      id: "2",
-      name: "Phước Đông New City",
-      location: "Nha Trang, Khánh Hòa",
-      description: "Dự án đô thị ven biển hiện đại",
-      image: "/placeholder.svg?height=300&width=400",
-      rating: 4.8,
-    },
-    {
-      id: "3",
-      name: "Masteri Grand Gia Hưng",
-      location: "Quận 9, Hồ Chí Minh",
-      description: "Căn hộ cao cấp với tiện ích đầy đủ",
-      image: "/placeholder.svg?height=300&width=400",
-      rating: 4.7,
-    },
-    {
-      id: "4",
-      name: "SunBay Park Long",
-      location: "Phan Rang, Ninh Thuận",
-      description: "Khu nghỉ dưỡng ven biển",
-      image: "/placeholder.svg?height=300&width=400",
-      rating: 4.6,
-    },
-  ]
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category)
+  }
+
+  // Lọc các phòng nổi bật (isFeatured = true)
+  const featuredProperties = allProperties.filter(property => property.isFeatured).slice(0, 4)
+  
+  // Lọc các phòng đang hot (isHot = true)
+  const hotProperties = allProperties.filter(property => property.isHot).slice(0, 4)
 
   const categoryInfo = {
     studio: {
@@ -265,6 +325,24 @@ export default function Homepage() {
       count: allProperties.filter((p) => p.category === "loft").length,
       priceRange: "3.8 - 5.5 triệu/tháng",
     },
+    "cao-cap": {
+      title: "Cao Cấp",
+      description: "Căn hộ cao cấp với tiện ích đầy đủ",
+      count: allProperties.filter((p) => p.category === "cao-cap").length,
+      priceRange: "12.0 - 15.0 triệu/tháng",
+    },
+    "1phongngu": {
+      title: "1 Phòng Ngủ",
+      description: "Căn hộ 1 phòng ngủ riêng biệt, thoải mái",
+      count: allProperties.filter((p) => p.category === "1phongngu").length,
+      priceRange: "7.5 - 12.0 triệu/tháng",
+    },
+    "2phongngu": {
+      title: "2 Phòng Ngủ",
+      description: "Căn hộ 2 phòng ngủ riêng biệt, thoải mái",
+      count: allProperties.filter((p) => p.category === "2phongngu").length,
+      priceRange: "15.0 - 20.0 triệu/tháng",
+    },
   }
 
   const filteredProperties =
@@ -272,50 +350,110 @@ export default function Homepage() {
       ? allProperties.slice(0, 3)
       : allProperties.filter((p) => p.category === selectedCategory).slice(0, 3)
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategory(category)
+  // Hàm lấy ảnh ngẫu nhiên
+  const getRandomImage = (index: number): string => {
+    const randomIndex = Math.floor(Math.random() * 152) + 1;
+    return `/rooms/${randomIndex}.jpg`;
   }
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
-                <Home className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl overflow-hidden shadow-xl ring-2 ring-[#20db9b] ring-offset-2 transition-transform duration-300 hover:rotate-3 hover:scale-105">
+                <img
+                  src="/logo/logo.png"
+                  alt="IZI HOUSE Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className="text-xl font-bold text-blue-600">IZI HOUSE</span>
+
+              <span
+                className="text-3xl font-extrabold bg-gradient-to-r from-[#00ffcc] to-[#0033cc] bg-clip-text text-transparent 
+                drop-shadow-[2px_2px_0px_rgba(0,0,0,0.3)]"
+              >
+                IZI HOUSE
+              </span>
             </div>
 
-            <nav className="hidden md:flex items-center gap-8">
-              <Link href="/promotions" className="text-gray-700 hover:text-blue-600 font-medium">
-                CHƯƠNG TRÌNH ƯU ĐÃI
+            <nav className="hidden md:flex items-center gap-6">
+              <Link 
+                href="/about" 
+                className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
+              >
+                <span className="relative z-10">GIỚI THIỆU</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/services" className="text-gray-700 hover:text-blue-600 font-medium">
-                TIỆN ÍCH
+              <Link 
+                href="/promotions" 
+                className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
+              >
+                <span className="relative z-10">CHƯƠNG TRÌNH ƯU ĐÃI</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/roommate" className="text-gray-700 hover:text-blue-600 font-medium">
-                ROOMMATE
+              
+              <Link 
+                href="/services" 
+                className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
+              >
+                <span className="relative z-10">TIỆN ÍCH</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/news" className="text-gray-700 hover:text-blue-600 font-medium">
-                TIN TỨC
+              
+              <Link 
+                href="/roommate" 
+                className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
+              >
+                <span className="relative z-10">BẠN CÙNG PHÒNG</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              
+              <Link 
+                href="/news" 
+                className="relative px-3 py-2 text-gray-700 font-medium group transition-colors duration-300"
+              >
+                <span className="relative z-10">TIN TỨC</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#20db9b] transition-all duration-300 group-hover:w-full"></span>
               </Link>
 
-              <Link href="/post" className="text-gray-700 hover:text-blue-600 font-medium">
-                ĐĂNG TIN
-              </Link>
-              <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium">
-                ĐĂNG NHẬP
-              </Link>
+              {status === 'authenticated' && (
+                <Link 
+                  href="/post" 
+                  className="px-4 py-2 bg-white text-[#20db9b] font-medium rounded-md border-2 border-[#20db9b] hover:bg-[#20db9b] hover:text-white transition-colors duration-300"
+                >
+                  ĐĂNG TIN
+                </Link>
+              )}
             </nav>
 
             <div className="flex items-center gap-4">
-              <Link href="/register" className="text-sm text-gray-600 hover:text-blue-600">
-                ĐĂNG KÍ
-              </Link>
-
+              {!session && (
+                <>
+                  <Link 
+                    href="/register" 
+                    className="px-4 py-2 text-[#20db9b] font-medium rounded-md border border-[#20db9b] hover:bg-[#f0fdf9] transition-colors duration-300"
+                  >
+                    ĐĂNG KÍ
+                  </Link>
+                  <Link 
+                    href="/login" 
+                    className="px-4 py-2 bg-[#20db9b] text-white font-medium rounded-md hover:bg-[#1ac78a] transition-colors duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
+                  >
+                    ĐĂNG NHẬP
+                  </Link>
+                </>
+              )}
+              {session && (
+                <Link 
+                  href="/profile" 
+                  className="px-4 py-2 text-gray-700 font-medium hover:text-[#20db9b] transition-colors duration-300"
+                >
+                  {session.user?.name || 'Tài khoản'}
+                </Link>
+              )}
               {/* Notification Bell */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -332,7 +470,7 @@ export default function Homepage() {
                   <div className="flex items-center justify-between p-2">
                     <DropdownMenuLabel>Thông báo</DropdownMenuLabel>
                     {unreadCount > 0 && (
-                      <Button variant="ghost" size="sm" onClick={markAllAsRead} className="text-xs text-blue-600">
+                      <Button variant="ghost" size="sm" onClick={() => setUnreadCount(0)} className="text-xs text-blue-600">
                         Đánh dấu đã đọc
                       </Button>
                     )}
@@ -344,7 +482,6 @@ export default function Homepage() {
                       <DropdownMenuItem
                         key={notification.id}
                         className="p-3 cursor-pointer hover:bg-gray-50"
-                        onClick={() => markAsRead(notification.id)}
                       >
                         <div className="flex gap-3 w-full">
                           <div className="flex-shrink-0 mt-1">{notification.icon}</div>
@@ -391,47 +528,79 @@ export default function Homepage() {
       </header>
 
       {/* Promotional Carousel Section */}
-      <section className="py-8 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <section className="py-12 bg-gradient-to-r from-blue-50 to-indigo-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Chương trình ưu đãi</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Chương trình ưu đãi</h2>
+            <div className="flex items-center space-x-2">
+              {}
+            </div>
           </div>
 
-          <div className="relative max-w-4xl mx-auto">
-            <div className="overflow-hidden rounded-2xl">
-              <div className="relative h-80 bg-gradient-to-r from-blue-100 to-green-100">
-                <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-KzlDsmcWOohqkPnPT796gJkt2Roiyi.png"
-                  alt="Chương trình ưu đãi"
-                  className="w-full h-full object-cover"
-                />
-
-                {/* Overlay content - Cân đối lại */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent">
-                  <div className="flex items-center justify-center h-full px-8">
-                    <div className="text-white text-center max-w-2xl">
-                      <h3 className="text-4xl font-bold mb-6">Ưu đãi đặc biệt</h3>
-                      <p className="text-xl mb-8 leading-relaxed">
-                        Giảm giá lên đến 30% cho các căn hộ cao cấp. Cơ hội sở hữu ngôi nhà mơ ước với mức giá tốt nhất.
-                      </p>
-                      <Button className="bg-red-600 hover:bg-red-700 text-white px-10 py-4 text-lg">
-                        Xem chi tiết
-                      </Button>
+          <div className="relative">
+            <div className="overflow-hidden rounded-2xl shadow-xl" ref={emblaRef}>
+              <div className="flex">
+                {promotions.map((promo) => (
+                  <div key={promo.id} className="flex-[0_0_100%] min-w-0 relative">
+                    <div className="relative h-[500px] md:h-[600px]">
+                      <img
+                        src={promo.image}
+                        alt={promo.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent">
+                        <div className="container mx-auto h-full flex items-center">
+                          <div className="max-w-2xl text-white px-8">
+                            <h3 className="text-4xl md:text-5xl font-bold mb-6 animate-fadeIn">
+                              {promo.title}
+                            </h3>
+                            <p className="text-xl md:text-2xl mb-8 leading-relaxed animate-fadeIn animation-delay-200">
+                              {promo.description}
+                            </p>
+                            <Link
+                              href={promo.buttonLink}
+                              target={promo.target || "_self"}
+                              rel={promo.target === "_blank" ? "noopener noreferrer" : undefined}
+                              className="inline-block bg-red-600 hover:bg-red-700 text-white font-medium px-8 py-4 rounded-lg text-lg transition-colors duration-300 transform hover:scale-105"
+                            >
+                              {promo.buttonText}
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Carousel Navigation Dots */}
-            <div className="flex justify-center mt-6 gap-2">
-              <div className="w-3 h-3 rounded-full bg-blue-600"></div>
-              <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-              <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-              <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+            <div className="flex justify-center mt-6 space-x-2">
+              {scrollSnaps.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => scrollTo(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === selectedPromoIndex ? 'w-8 bg-blue-600' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
+
+        <style jsx global>{`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out forwards;
+          }
+          .animation-delay-200 {
+            animation-delay: 200ms;
+          }
+        `}</style>
       </section>
 
       {/* Hero Section */}
@@ -535,11 +704,75 @@ export default function Homepage() {
         </div>
       </section>
 
+      {/* Phòng nổi bật */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Phòng HOT</h2>
+              <p className="text-gray-600">Những phòng trọ, căn hộ được ưa chuộng nhất</p>
+            </div>
+            <Link href="/rooms?filter=featured" className="text-primary hover:underline font-medium flex items-center">
+              Xem tất cả
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProperties.map((property, index) => (
+              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                <div className="relative">
+                  <img
+                    src={getRandomImage(index)}
+                    alt={property.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  {property.isHot && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                      HOT
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2">
+                    <button className="bg-white/90 rounded-full p-2 hover:bg-white transition-colors">
+                      <Heart className="w-5 h-5 text-gray-700" />
+                    </button>
+                  </div>
+                </div>
+                <CardContent className="p-4 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-gray-900 line-clamp-2">{property.title}</h3>
+                    <div className="flex items-center bg-primary/10 text-primary text-xs px-2 py-1 rounded">
+                      <Star className="w-3 h-3 fill-current mr-1" />
+                      <span>{property.rating}</span>
+                    </div>
+                  </div>
+                  <p className="text-primary font-bold text-lg mb-2">{property.price}</p>
+                  <div className="flex items-center text-gray-600 text-sm mb-2">
+                    <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                    <span className="line-clamp-1">{property.location}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm text-gray-500 mt-auto pt-2 border-t">
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-500 fill-current mr-1" />
+                      <span>{property.rating}</span>
+                      <span className="mx-1">•</span>
+                      <span>{property.reviews} đánh giá</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Properties */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Bất động sản dành cho bạn</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Phòng gần đây</h2>
             <div className="flex gap-4">
               <Button
                 variant={selectedCategory === "studio" ? "default" : "outline"}
@@ -603,11 +836,11 @@ export default function Homepage() {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {filteredProperties.map((property) => (
+            {filteredProperties.map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative">
                   <img
-                    src={property.image || "/placeholder.svg"}
+                    src={getRandomImage(index)}
                     alt={property.title}
                     className="w-full h-48 object-cover"
                   />
@@ -638,17 +871,17 @@ export default function Homepage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Phòng nổi bật</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Phòng Ghép</h2>
             <span className="text-blue-600 cursor-pointer">Xem thêm »</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {projects.map((project) => (
+            {featuredProperties.map((project, index) => (
               <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative">
                   <img
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.name}
+                    src={getRandomImage(index)}
+                    alt={project.title}
                     className="w-full h-48 object-cover"
                   />
                   <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
@@ -659,7 +892,7 @@ export default function Homepage() {
                   </div>
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">{project.name}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">{project.title}</h3>
                   <div className="flex items-center text-gray-600 text-sm mb-2">
                     <MapPin className="w-4 h-4 mr-1" />
                     {project.location}
@@ -672,18 +905,80 @@ export default function Homepage() {
         </div>
       </section>
 
+      {/* News Section - Phòng nổi bật */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Phòng mới</h2>
+            <Link href="/rooms?filter=featured" className="text-blue-600 hover:underline flex items-center">
+              Xem thêm
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProperties.slice(0, 4).map((property, index) => (
+              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                <div className="relative">
+                  <img
+                    src={getRandomImage(index)}
+                    alt={property.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  {property.isHot && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                      HOT
+                    </div>
+                  )}
+                </div>
+                <CardContent className="p-4 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-gray-900 line-clamp-2">
+                      {property.title}
+                    </h3>
+                    <div className="flex items-center bg-primary/10 text-primary text-xs px-2 py-1 rounded">
+                      <Star className="w-3 h-3 fill-current mr-1" />
+                      <span>{property.rating}</span>
+                    </div>
+                  </div>
+                  <p className="text-primary font-bold text-lg mb-2">{property.price}</p>
+                  <div className="flex items-center text-gray-600 text-sm mb-2">
+                    <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                    <span className="line-clamp-1">{property.location}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm text-gray-500 mt-auto pt-2 border-t">
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 text-yellow-500 fill-current mr-1" />
+                      <span>{property.rating}</span>
+                      <span className="mx-1">•</span>
+                      <span>{property.reviews} đánh giá</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Regional Properties */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Bất động sản theo khu vực</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Phòng theo khu vực</h2>
             <span className="text-blue-600 cursor-pointer">Xem thêm »</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="overflow-hidden">
               <div className="relative h-64">
-                <img src="/placeholder.svg?height=300&width=600" alt="TP.HCM" className="w-full h-full object-cover" />
+                <img 
+                  src={getRandomImage(0)} 
+                  alt="TP.HCM" 
+                  className="w-full h-full object-cover" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 text-white">
                   <h3 className="text-xl font-bold mb-2">TP.HCM</h3>
@@ -702,7 +997,7 @@ export default function Homepage() {
                 <Card key={index} className="overflow-hidden">
                   <div className="relative h-32">
                     <img
-                      src="/placeholder.svg?height=150&width=300"
+                      src={getRandomImage(index)}
                       alt={city.name}
                       className="w-full h-full object-cover"
                     />
@@ -719,56 +1014,64 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* News Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Nội bật</h2>
-            <span className="text-blue-600 cursor-pointer">Xem thêm »</span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((item) => (
-              <Card key={item} className="overflow-hidden">
-                <img src="/placeholder.svg?height=200&width=300" alt="Tin tức" className="w-full h-48 object-cover" />
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                    Điện Biên Phủ, phường 21, Bình Thạnh - 4 TRIỆU Full nội thất
-                  </h3>
-                  <p className="text-gray-600 text-sm line-clamp-3">
-                    Danh sách chung cư các cấp tại Nội sảng trong và ngoài nước...
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* App Download */}
       <section className="py-16 bg-blue-600">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
-              <div className="text-white">
-                <h3 className="text-2xl font-bold mb-2">TÌM KIẾM - LỰA CHỌN BẤT ĐỘNG SAN</h3>
-
-                <p className="mb-6">IZI HOUSE - Find your room, your way With trust and ease</p>
-                <div className="flex gap-4">
-                  <Button className="bg-black text-white hover:bg-gray-800">
-                    <Smartphone className="w-4 h-4 mr-2" />
-                    App Store
-                  </Button>
-                  <Button className="bg-black text-white hover:bg-gray-800">
-                    <Download className="w-4 h-4 mr-2" />
-                    Google Play
-                  </Button>
-                </div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="text-white max-w-xl">
+              <h3 className="text-2xl md:text-3xl font-bold mb-4">TẢI ỨNG DỤNG IZI HOUSE</h3>
+              <p className="text-lg mb-6">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
+                >
+                  <div className="mr-2">
+                    <svg width="20" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.835 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xs">Tải xuống trên</div>
+                    <div className="font-semibold">App Store</div>
+                  </div>
+                </a>
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
+                >
+                  <div className="mr-2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-xs">Tải xuống trên</div>
+                    <div className="font-semibold">Google Play</div>
+                  </div>
+                </a>
               </div>
             </div>
-            <div className="hidden lg:block">
-              <div className="bg-white p-4 rounded-lg">
-                <img src="/placeholder.svg?height=150&width=150" alt="QR Code" className="w-32 h-32" />
+            <div className="mt-6 flex items-center justify-center lg:justify-start">
+              <div className="bg-white p-2 rounded-lg">
+                <img 
+                  src="/QR/QR.png" 
+                  alt="IZI HOUSE Logo" 
+                  className="w-48 h-auto object-contain"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22192%22%20height%3D%22192%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22192%22%20height%3D%22192%22%20fill%3D%22%23f3f4f6%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20fill%3D%22%239ca3af%22%3EIZI%20HOUSE%20Logo%3C%2Ftext%3E%3C%2Fsvg%3E';
+                  }}
+                />
+              </div>
+              <div className="ml-4 text-sm">
+                <p>Quét mã QR để tải ứng dụng</p>
+                <p className="text-blue-200">Hỗ trợ iOS & Android</p>
               </div>
             </div>
           </div>
@@ -835,7 +1138,7 @@ export default function Homepage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  Email: info@homedy.com
+                  Email: izihouse@gmail.com
                 </li>
               </ul>
             </div>
@@ -843,21 +1146,50 @@ export default function Homepage() {
             <div>
               <h4 className="font-bold mb-4">KẾT NỐI VỚI CHÚNG TÔI</h4>
               <div className="flex gap-4">
-                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                  <Facebook className="w-5 h-5" />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                  <Youtube className="w-5 h-5" />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                  <Instagram className="w-5 h-5" />
-                </Button>
+                <a 
+                  href="https://www.facebook.com/profile.php?id=61577216990159" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+                <a 
+                  href="#" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
+                  </svg>
+                </a>
+                <a 
+                  href="#" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M12 2.16c4.81 0 8.84 3.15 10.2 7.5h-3.9a6.5 6.5 0 0 0-12.6 0H1.8c1.36-4.35 5.39-7.5 10.2-7.5z" opacity=".1"></path>
+                    <path d="M21.95 10.5h-3.8a6.5 6.5 0 0 0-12.3 0H1.8a10.5 10.5 0 0 1 20.15 0z" opacity=".25"></path>
+                    <path d="M12 21.84c-4.81 0-8.84-3.15-10.2-7.5h3.9a6.5 6.5 0 0 1 12.6 0h3.9c-1.36 4.35-5.39 7.5-10.2 7.5z" opacity=".5"></path>
+                    <path d="M12 2.16c-4.81 0-8.84 3.15-10.2 7.5h3.9a6.5 6.5 0 0 1 12.6 0h3.9c-1.36-4.35-5.39-7.5-10.2-7.5z" fill="currentColor"></path>
+                    <path d="M12 21.84c-4.81 0-8.84-3.15-10.2-7.5h3.9a6.5 6.5 0 0 0 12.6 0h3.9c-1.36 4.35-5.39 7.5-10.2 7.5z" fill="currentColor"></path>
+                  </svg>
+                </a>
+                <a 
+                  href="#" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M12 2.16c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm-1.5 15.5v-6.5h-2v-2h2v-1.5c0-1.93 1.57-3.5 3.5-3.5h1.5v2h-1.5c-.83 0-1.5.67-1.5 1.5v1.5h2.5v2h-2.5v6.5h-2z"></path>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
 
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>© 2025 izihouse.com. Tất cả bản quyền thuộc về izi house.</p>
+            <p> 2025 izihouse.com. Tất cả bản quyền thuộc về izi house.</p>
           </div>
         </div>
       </footer>
