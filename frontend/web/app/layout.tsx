@@ -1,10 +1,16 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { SessionProvider } from "@/components/providers/SessionProvider"
-import Head from 'next/head'
 
 const inter = Inter({ subsets: ["latin"] })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: 'cover',
+}
 
 export const metadata: Metadata = {
   title: "IZI HOUSE",
@@ -15,12 +21,6 @@ export const metadata: Metadata = {
     apple: '/logo/logo.png',
   },
   manifest: '/site.webmanifest',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    viewportFit: 'cover',
-  },
 }
 
 export default function RootLayout({
@@ -31,7 +31,6 @@ export default function RootLayout({
   return (
     <html lang="vi" className="scroll-smooth">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="icon" href="/logo/logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo/logo.png" />
