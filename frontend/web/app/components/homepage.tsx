@@ -40,6 +40,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Autoplay from 'embla-carousel-autoplay'
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 
 interface PropertyListing {
   id: string
@@ -365,11 +366,13 @@ export default function Homepage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl overflow-hidden shadow-xl ring-2 ring-[#20db9b] ring-offset-2 transition-transform duration-300 hover:rotate-3 hover:scale-105">
-                <img
-                  src="/logo/logo.png"
-                  alt="IZI HOUSE Logo"
-                  className="w-full h-full object-contain"
-                />
+                <Image
+                    src="/logo/logo.png"
+                    alt="IZI HOUSE Logo"
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-contain"
+                  />
               </div>
 
               <span
@@ -544,10 +547,13 @@ export default function Homepage() {
                 {promotions.map((promo) => (
                   <div key={promo.id} className="flex-[0_0_100%] min-w-0 relative">
                     <div className="relative h-[500px] md:h-[600px]">
-                      <img
+                      <Image
                         src={promo.image}
                         alt={promo.title}
+                        width={1200}
+                        height={600}
                         className="w-full h-full object-cover"
+                        priority
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent">
                         <div className="container mx-auto h-full flex items-center">
@@ -725,10 +731,12 @@ export default function Homepage() {
             {featuredProperties.map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
                 <div className="relative">
-                  <img
+                  <Image
                     src={getRandomImage(index)}
                     alt={property.title}
-                    className="w-full h-48 object-cover"
+                    width={800}
+                    height={400}
+                    className="w-full h-full object-cover rounded-lg"
                   />
                   {property.isHot && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -840,10 +848,12 @@ export default function Homepage() {
             {filteredProperties.map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative">
-                  <img
+                  <Image
                     src={getRandomImage(index)}
                     alt={property.title}
-                    className="w-full h-48 object-cover"
+                    width={800}
+                    height={400}
+                    className="w-full h-full object-cover rounded-lg"
                   />
                   {property.isHot && <Badge className="absolute top-2 left-2 bg-red-600">HOT</Badge>}
                   <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-white/80 hover:bg-white">
@@ -880,10 +890,12 @@ export default function Homepage() {
             {featuredProperties.map((project, index) => (
               <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative">
-                  <img
-                    src={getRandomImage(index)}
-                    alt={project.title}
-                    className="w-full h-48 object-cover"
+                  <Image
+                    src="/banner/promotion.jpg"
+                    alt="Khuyến mãi đặc biệt"
+                    width={800}
+                    height={400}
+                    className="w-full h-full object-cover rounded-lg"
                   />
                   <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
                     <div className="flex items-center gap-1">
@@ -923,10 +935,12 @@ export default function Homepage() {
             {featuredProperties.slice(0, 4).map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
                 <div className="relative">
-                  <img
-                    src={getRandomImage(index)}
-                    alt={property.title}
-                    className="w-full h-48 object-cover"
+                  <Image
+                    src="/banner/roommate.jpg"
+                    alt="Tìm bạn ở ghép"
+                    width={800}
+                    height={400}
+                    className="w-full h-full object-cover rounded-lg"
                   />
                   {property.isHot && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -975,10 +989,12 @@ export default function Homepage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="overflow-hidden">
               <div className="relative h-64">
-                <img 
+                <Image 
                   src={getRandomImage(0)} 
                   alt="TP.HCM" 
-                  className="w-full h-full object-cover" 
+                  width={800}
+                  height={400}
+                  className="w-full h-full object-cover rounded-lg"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 text-white">
@@ -997,10 +1013,12 @@ export default function Homepage() {
               ].map((city, index) => (
                 <Card key={index} className="overflow-hidden">
                   <div className="relative h-32">
-                    <img
+                    <Image
                       src={getRandomImage(index)}
                       alt={city.name}
-                      className="w-full h-full object-cover"
+                      width={800}
+                      height={400}
+                      className="w-full h-full object-cover rounded-lg"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div className="absolute bottom-2 left-2 text-white">
@@ -1059,10 +1077,13 @@ export default function Homepage() {
             </div>
             <div className="mt-6 flex items-center justify-center lg:justify-start">
               <div className="bg-white p-2 rounded-lg">
-                <img 
-                  src="/QR/QR.png" 
-                  alt="IZI HOUSE Logo" 
-                  className="w-48 h-auto object-contain"
+                <Image
+                  src="/QR/QR.png"
+                  alt="IZI HOUSE Banner"
+                  width={1200}
+                  height={400}
+                  className="w-full h-auto object-cover rounded-lg"
+                  priority
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.onerror = null;
