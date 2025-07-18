@@ -136,9 +136,9 @@ export default function RoomsPage() {
     },
     {
       id: "3",
-      title: "Căn hộ full nội thất Quận 7",
+      title: "Căn hộ full nội thất tại Quận 7",
       price: "7.5 triệu/tháng",
-      location: "Quận 7, TP.HCM",
+      location: "Quận 7,  TP.HCM",
       area: "35 m²",
       bedrooms: 1,
       bathrooms: 1,
