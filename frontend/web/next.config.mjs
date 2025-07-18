@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  output: 'export', // Quan trọng!
+  // output: 'export', // Commented out as requested
 };
 
 export default nextConfig;
