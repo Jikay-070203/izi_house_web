@@ -1,3 +1,27 @@
 {
-  "/page": "app/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/explore/page": "app/explore/page.js",
+  "/careers/page": "app/careers/page.js",
+  "/faq/page": "app/faq/page.js",
+  "/instruct/page": "app/instruct/page.js",
+  "/login/page": "app/login/page.js",
+  "/map/page": "app/map/page.js",
+  "/news/page": "app/news/page.js",
+  "/post/page": "app/post/page.js",
+  "/page": "app/page.js",
+  "/privacy/page": "app/privacy/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/register/page": "app/register/page.js",
+  "/promotions/page": "app/promotions/page.js",
+  "/roommate/page": "app/roommate/page.js",
+  "/social/facebook/page": "app/social/facebook/page.js",
+  "/rooms/page": "app/rooms/page.js",
+  "/social/tiktok/page": "app/social/tiktok/page.js",
+  "/support/page": "app/support/page.js",
+  "/social/youtube/page": "app/social/youtube/page.js",
+  "/social/instagram/page": "app/social/instagram/page.js",
+  "/services/page": "app/services/page.js",
+  "/terms/page": "app/terms/page.js"
 }

@@ -1027,8 +1027,12 @@ export default function Homepage() {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             {/* Left content */}
             <div className="text-white text-center lg:text-left w-full max-w-xl">
-              <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 leading-tight">TẢI ỨNG DỤNG IZI HOUSE</h3>
-              <p className="text-blue-100 mb-6 md:mb-8 text-base md:text-lg">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
+              <h3 className="text-3xl md:text-4xl font-extrabold mb-4 md:mb-5 leading-tight tracking-tight drop-shadow-lg">
+                TẢI ỨNG DỤNG IZI HOUSE
+              </h3>
+              <p className="text-blue-100 text-lg md:text-xl mb-8 md:mb-10 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                Tìm kiếm phòng nhanh chóng, tiện lợi mọi lúc mọi nơi
+              </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 justify-start max-w-md mx-auto lg:mx-0">
                 <a 
                   href="#" 
@@ -1037,9 +1041,13 @@ export default function Homepage() {
                   className="inline-flex items-center bg-black text-white px-4 py-2 md:px-5 md:py-2.5 rounded-lg hover:bg-gray-900 transition-colors w-full"
                 >
                   <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center mr-2">
-                    <svg width="20" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M16.835 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z" fill="white"></path>
-                    </svg>
+                    <Image 
+                      src="/logo/apple_logo.svg" 
+                      alt="App Store" 
+                      width={60} 
+                      height={60} 
+                      className="w-6 h-6"
+                    />
                   </div>
                   <div className="text-left overflow-hidden">
                     <div className="text-[10px] sm:text-xs leading-none">Tải xuống trên</div>
@@ -1049,13 +1057,17 @@ export default function Homepage() {
                 <a 
                   href="#" 
                   target="_blank" 
-                  rel="noopener noreferrer"
+                  rel="opener noreferrer"
                   className="inline-flex items-center bg-black text-white px-4 py-2 md:px-5 md:py-2.5 rounded-lg hover:bg-gray-900 transition-colors w-full"
                 >
                   <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center mr-2">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z" fill="white"/>
-                    </svg>
+                    <Image 
+                      src="/logo/ch_play_logo.svg" 
+                      alt="Google Play" 
+                      width={24} 
+                      height={24} 
+                      className="w-6 h-6"
+                    />
                   </div>
                   <div className="text-left overflow-hidden">
                     <div className="text-[10px] sm:text-xs leading-none">Tải xuống trên</div>
@@ -1098,7 +1110,7 @@ export default function Homepage() {
             <div>
               <h3 className="text-lg font-bold mb-4">Về IZI HOUSE</h3>
               <p className="text-gray-400 text-sm mb-4">
-                Nền tảng kết nối chủ nhà và người tìm phòng hàng đầu Việt Nam.
+                Nền tảng tiện lợi cho người tìm phòng Việt Nam.
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-white">
@@ -1117,24 +1129,25 @@ export default function Homepage() {
               <h3 className="text-lg font-bold mb-4">Liên kết nhanh</h3>
               <ul className="space-y-2">
                 <li><a href="/about" className="text-gray-400 hover:text-white text-sm">Về chúng tôi</a></li>
-                <li><a href="/blog" className="text-gray-400 hover:text-white text-sm">Blog</a></li>
+                <li><a href="/news?tab=blog" className="text-gray-400 hover:text-white text-sm">Blog</a></li>
                 <li><a href="/contact" className="text-gray-400 hover:text-white text-sm">Liên hệ</a></li>
-                <li><a href="/help" className="text-gray-400 hover:text-white text-sm">Trợ giúp</a></li>
+                <li><a href="/instruct" className="text-gray-400 hover:text-white text-sm">Hướng dẫn</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="text-lg font-bold mb-4">Hỗ trợ</h3>
               <ul className="space-y-2">
-                <li><a href="/faq" className="text-gray-400 hover:text-white text-sm">Câu hỏi thường gặp</a></li>
+                <li><a href="/faq" className="text-gray-400 hover:text-white text-sm">Góp ý khách hàng</a></li>
                 <li><a href="/terms" className="text-gray-400 hover:text-white text-sm">Điều khoản sử dụng</a></li>
                 <li><a href="/privacy" className="text-gray-400 hover:text-white text-sm">Chính sách bảo mật</a></li>
+                <li><a href="/support" className="text-gray-400 hover:text-white text-sm">Hỗ trợ</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="text-lg font-bold mb-4">Đăng ký nhận tin</h3>
-              <p className="text-gray-400 text-sm mb-4">Nhận thông tin mới nhất về các ưu đãi độc quyền</p>
+              <p className="text-gray-400 text-sm mb-4">Nhận thông tin mới nhất về các ưu đãi từ IZI HOUSE</p>
               <div className="flex">
                 <input 
                   type="email" 
@@ -1150,18 +1163,14 @@ export default function Homepage() {
           
           <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
-              <Image 
+              <Image
                 src="/logo/logo.png" 
                 alt="IZI HOUSE" 
                 width={120} 
                 height={40} 
                 className="h-8 w-auto"
               />
-              <span className="ml-2 text-gray-400 text-sm"> 2025 IZI HOUSE. All rights reserved.</span>
-            </div>
-            <div className="flex space-x-6">
-              <a href="#" className="text-gray-400 hover:text-white text-sm">Điều khoản</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm">Bảo mật</a>
+              <span className="ml-2 text-gray-400 text-sm"> IZI HOUSE. All rights reserved.</span>
             </div>
           </div>
         </div>
