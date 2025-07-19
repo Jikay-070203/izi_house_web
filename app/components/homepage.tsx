@@ -885,19 +885,24 @@ export default function Homepage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">Phòng Ghép</h2>
-            <span className="text-blue-600 cursor-pointer">Xem thêm »</span>
+            <Link href="/roommate" className="text-blue-600 hover:underline flex items-center">
+              Xem thêm
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProperties.map((project, index) => (
-              <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative">
+              <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col group">
+                <div className="relative h-48 w-full overflow-hidden">
                   <Image
-                    src="/banner/promotion.jpg"
-                    alt="Khuyến mãi đặc biệt"
-                    width={800}
-                    height={400}
-                    className="w-full h-full object-cover rounded-lg"
+                    src={getRandomImage(index)}
+                    alt={project.title}
+                    width={400}
+                    height={300}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute bottom-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
                     <div className="flex items-center gap-1">
@@ -906,11 +911,11 @@ export default function Homepage() {
                     </div>
                   </div>
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">{project.title}</h3>
+                <CardContent className="p-4 flex-1 flex flex-col">
+                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{project.title}</h3>
                   <div className="flex items-center text-gray-600 text-sm mb-2">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    {project.location}
+                    <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                    <span className="line-clamp-1">{project.location}</span>
                   </div>
                   <p className="text-gray-600 text-sm line-clamp-2">{project.description}</p>
                 </CardContent>
@@ -920,12 +925,12 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* News Section - Phòng nổi bật */}
-      <section className="py-16">
+      {/* News Section - Phòng mới */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-gray-900">Phòng mới</h2>
-            <Link href="/rooms?filter=featured" className="text-blue-600 hover:underline flex items-center">
+            <Link href="/rooms?filter=new" className="text-blue-600 hover:underline flex items-center">
               Xem thêm
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -935,15 +940,14 @@ export default function Homepage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProperties.slice(0, 4).map((property, index) => (
-              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col group">
                 <div className="relative h-48 w-full overflow-hidden">
                   <Image
-                    src="/banner/roommate.jpg"
-                    alt="Tìm bạn ở ghép"
+                    src={getRandomImage(index)}
+                    alt={property.title}
                     width={400}
                     height={300}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    priority
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   {property.isHot && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
