@@ -58,7 +58,7 @@ interface PropertyListing {
   reviews: number
   category: "studio" | "1bedroom" | "ktx" | "loft" | "cao-cap" | "1phongngu" | "2phongngu"
   amenities: string[]
-  description?: string // <--- THÊM DÒNG NÀY VÀO ĐÂY
+  description?: string 
 }
 
 interface Project {
@@ -1036,18 +1036,19 @@ export default function Homepage() {
       {/* App Download */}
       <section className="py-16 bg-blue-600">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="text-white max-w-xl">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            {/* Left content */}
+            <div className="text-white max-w-xl text-center lg:text-left">
               <h3 className="text-2xl md:text-3xl font-bold mb-4">TẢI ỨNG DỤNG IZI HOUSE</h3>
-              <p className="text-lg mb-6">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <p className="text-lg mb-6 text-blue-100">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <a 
                   href="#" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
                 >
-                  <div className="mr-2">
+                  <div className="mr-3">
                     <svg width="20" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M16.835 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
                     </svg>
@@ -1063,7 +1064,7 @@ export default function Homepage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
                 >
-                  <div className="mr-2">
+                  <div className="mr-3">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z" fill="white"/>
                     </svg>
@@ -1075,25 +1076,27 @@ export default function Homepage() {
                 </a>
               </div>
             </div>
-            <div className="mt-6 flex items-center justify-center lg:justify-start">
-              <div className="bg-white p-2 rounded-lg">
+
+            {/* Right QR Code section */}
+            <div className="flex flex-col items-center lg:items-start">
+              <div className="bg-white p-4 rounded-xl shadow-lg mb-4">
                 <Image
                   src="/QR/QR.png"
-                  alt="IZI HOUSE Banner"
-                  width={1200}
-                  height={400}
-                  className="w-full h-auto object-cover rounded-lg"
+                  alt="QR Code để tải ứng dụng IZI HOUSE"
+                  width={160}
+                  height={160}
+                  className="w-40 h-40 object-contain"
                   priority
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.onerror = null;
-                    target.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22192%22%20height%3D%22192%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22192%22%20height%3D%22192%22%20fill%3D%22%23f3f4f6%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2216%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20fill%3D%22%239ca3af%22%3EIZI%20HOUSE%20Logo%3C%2Ftext%3E%3C%2Fsvg%3E';
+                    target.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22160%22%20height%3D%22160%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22160%22%20height%3D%22160%22%20fill%3D%22%23f3f4f6%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20font-family%3D%22Arial%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%20fill%3D%22%239ca3af%22%3EQR%20Code%3C%2Ftext%3E%3C%2Fsvg%3E';
                   }}
                 />
               </div>
-              <div className="ml-4 text-sm">
-                <p>Quét mã QR để tải ứng dụng</p>
-                <p className="text-blue-200">Hỗ trợ iOS & Android</p>
+              <div className="text-center lg:text-left text-white">
+                <p className="font-semibold mb-1">Quét mã QR để tải ứng dụng</p>
+                <p className="text-blue-200 text-sm">Hỗ trợ iOS & Android</p>
               </div>
             </div>
           </div>
@@ -1174,36 +1177,32 @@ export default function Homepage() {
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                   </svg>
                 </a>
                 <a 
                   href="#" 
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </a>
                 <a 
                   href="#" 
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M12 2.16c4.81 0 8.84 3.15 10.2 7.5h-3.9a6.5 6.5 0 0 0-12.6 0H1.8c1.36-4.35 5.39-7.5 10.2-7.5z" opacity=".1"></path>
-                    <path d="M21.95 10.5h-3.8a6.5 6.5 0 0 0-12.3 0H1.8a10.5 10.5 0 0 1 20.15 0z" opacity=".25"></path>
-                    <path d="M12 21.84c-4.81 0-8.84-3.15-10.2-7.5h3.9a6.5 6.5 0 0 1 12.6 0h3.9c-1.36 4.35-5.39 7.5-10.2 7.5z" opacity=".5"></path>
-                    <path d="M12 2.16c-4.81 0-8.84 3.15-10.2 7.5h3.9a6.5 6.5 0 0 1 12.6 0h3.9c-1.36-4.35-5.39-7.5-10.2-7.5z" fill="currentColor"></path>
-                    <path d="M12 21.84c-4.81 0-8.84-3.15-10.2-7.5h3.9a6.5 6.5 0 0 0 12.6 0h3.9c-1.36 4.35-5.39 7.5-10.2 7.5z" fill="currentColor"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z" />
                   </svg>
                 </a>
                 <a 
                   href="#" 
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M12 2.16c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm-1.5 15.5v-6.5h-2v-2h2v-1.5c0-1.93 1.57-3.5 3.5-3.5h1.5v2h-1.5c-.83 0-1.5.67-1.5 1.5v1.5h2.5v2h-2.5v6.5h-2z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.765L15 14M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </a>
               </div>
