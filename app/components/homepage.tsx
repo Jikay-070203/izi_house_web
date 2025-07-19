@@ -1022,58 +1022,58 @@ export default function Homepage() {
       </section>
 
       {/* App Download */}
-      <section className="py-16 bg-blue-600">
+      <section className="py-12 md:py-16 bg-blue-600">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
             {/* Left content */}
-            <div className="text-white max-w-xl text-center lg:text-left">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">TẢI ỨNG DỤNG IZI HOUSE</h3>
-              <p className="text-lg mb-6 text-blue-100">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="text-white text-center lg:text-left max-w-xl w-full">
+              <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">TẢI ỨNG DỤNG IZI HOUSE</h3>
+              <p className="text-blue-100 mb-6 md:mb-8 text-base md:text-lg">Tìm kiếm và đặt phòng trọ nhanh chóng, tiện lợi mọi lúc mọi nơi</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 justify-center lg:justify-start">
                 <a 
                   href="#" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
+                  className="inline-flex items-center justify-start bg-black text-white px-4 py-2 md:px-6 md:py-3 rounded-lg hover:bg-gray-900 transition-colors w-full max-w-xs mx-auto lg:mx-0"
                 >
-                  <div className="mr-3">
+                  <div className="mr-3 flex-shrink-0">
                     <svg width="20" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M16.835 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z"></path>
                     </svg>
                   </div>
-                  <div className="text-left">
-                    <div className="text-xs">Tải xuống trên</div>
-                    <div className="font-semibold">App Store</div>
+                  <div className="text-left overflow-hidden">
+                    <div className="text-xs whitespace-nowrap overflow-hidden text-ellipsis">Tải xuống trên</div>
+                    <div className="font-semibold text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">App Store</div>
                   </div>
                 </a>
                 <a 
                   href="#" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition-colors"
+                  className="inline-flex items-center justify-start bg-black text-white px-4 py-2 md:px-6 md:py-3 rounded-lg hover:bg-gray-900 transition-colors w-full max-w-xs mx-auto lg:mx-0"
                 >
-                  <div className="mr-3">
+                  <div className="mr-3 flex-shrink-0">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22.46 6.42a8.12 8.12 0 0 1-2.2.6 3.93 3.93 0 0 0 1.77-2.2 8.5 8.5 0 0 1-2.56 1 4.1 4.1 0 0 0-7 3.72 11.64 11.64 0 0 1-8.45-4.3 4.1 4.1 0 0 0 1.28 5.52 4.22 4.22 0 0 1-1.85-.5v.05a4.1 4.1 0 0 0 3.3 4 3.9 3.9 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85 8.3 8.3 0 0 1-5.1 1.75 7.9 7.9 0 0 1-1-.06 11.57 11.57 0 0 0 6.29 1.85c7.55 0 11.67-6.25 11.67-11.67 0-.18 0-.36 0-.54a8.7 8.7 0 0 0 2-2.22z" fill="white"/>
                     </svg>
                   </div>
-                  <div className="text-left">
-                    <div className="text-xs">Tải xuống trên</div>
-                    <div className="font-semibold">Google Play</div>
+                  <div className="text-left overflow-hidden">
+                    <div className="text-xs whitespace-nowrap overflow-hidden text-ellipsis">Tải xuống trên</div>
+                    <div className="font-semibold text-sm md:text-base whitespace-nowrap overflow-hidden text-ellipsis">Google Play</div>
                   </div>
                 </a>
               </div>
             </div>
 
             {/* Right QR Code section */}
-            <div className="flex flex-col items-center lg:items-start">
-              <div className="bg-white p-4 rounded-xl shadow-lg mb-4">
+            <div className="flex flex-col items-center">
+              <div className="bg-white p-3 md:p-4 rounded-xl shadow-lg mb-3 md:mb-4">
                 <Image
                   src="/QR/QR.png"
                   alt="QR Code để tải ứng dụng IZI HOUSE"
-                  width={160}
-                  height={160}
-                  className="w-40 h-40 object-contain"
+                  width={140}
+                  height={140}
+                  className="w-32 h-32 md:w-40 md:h-40 object-contain"
                   priority
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -1082,9 +1082,9 @@ export default function Homepage() {
                   }}
                 />
               </div>
-              <div className="text-center lg:text-left text-white">
-                <p className="font-semibold mb-1">Quét mã QR để tải ứng dụng</p>
-                <p className="text-blue-200 text-sm">Hỗ trợ iOS & Android</p>
+              <div className="text-center text-white">
+                <p className="font-semibold text-sm md:text-base mb-1">Quét mã QR để tải ứng dụng</p>
+                <p className="text-blue-200 text-xs md:text-sm">Hỗ trợ iOS & Android</p>
               </div>
             </div>
           </div>
