@@ -34,6 +34,7 @@ import {
   Percent,
   Calendar,
   Tag,
+  User
 } from "lucide-react"
 import Link from "next/link"
 import useEmblaCarousel from 'embla-carousel-react'
@@ -611,22 +612,31 @@ export default function Homepage() {
       </section>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-400 to-blue-600 py-20">
+      <section className="relative bg-gradient-to-r from-blue-400 to-blue-600 py-12 md:py-20">
         <div className="absolute inset-0 bg-[url('/placeholder.svg?height=400&width=1200')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto">
             <Tabs value={searchTab} onValueChange={setSearchTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-6 bg-white/90">
-                <TabsTrigger value="mua-ban" className="text-sm font-medium">
+              <TabsList className="grid w-full grid-cols-3 gap-1 mb-4 md:mb-6 bg-white/90 p-1 rounded-lg">
+                <TabsTrigger 
+                  value="mua-ban" 
+                  className="text-xs sm:text-sm font-medium px-1 py-2 sm:px-2 sm:py-2 whitespace-nowrap"
+                >
                   TÌM KIẾM
                 </TabsTrigger>
-                <Link href="/map">
-                  <TabsTrigger value="cho-thue" className="text-sm font-medium">
-                    MAP BẢN ĐỒ
+                <Link href="/map" className="w-full">
+                  <TabsTrigger 
+                    value="cho-thue" 
+                    className="w-full text-xs sm:text-sm font-medium px-1 py-2 sm:px-2 sm:py-2 whitespace-nowrap"
+                  >
+                    BẢN ĐỒ
                   </TabsTrigger>
                 </Link>
-                <Link href="/explore">
-                  <TabsTrigger value="du-an" className="text-sm font-medium">
+                <Link href="/explore" className="w-full">
+                  <TabsTrigger 
+                    value="du-an" 
+                    className="w-full text-xs sm:text-sm font-medium px-1 py-2 sm:px-2 sm:py-2 whitespace-nowrap"
+                  >
                     KHÁM PHÁ
                   </TabsTrigger>
                 </Link>
@@ -779,99 +789,70 @@ export default function Homepage() {
       </section>
 
       {/* Featured Properties */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-8 md:py-12 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-gray-900">Phòng gần đây</h2>
-            <div className="flex gap-4">
-              <Button
-                variant={selectedCategory === "studio" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategorySelect("studio")}
-                className={selectedCategory === "studio" ? "bg-blue-600 text-white" : ""}
-              >
-                PHÒNG STUDIO
-              </Button>
-              <Button
-                variant={selectedCategory === "1bedroom" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategorySelect("1bedroom")}
-                className={selectedCategory === "1bedroom" ? "bg-blue-600 text-white" : ""}
-              >
-                1 PHÒNG NGỦ
-              </Button>
-              <Button
-                variant={selectedCategory === "ktx" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategorySelect("ktx")}
-                className={selectedCategory === "ktx" ? "bg-blue-600 text-white" : ""}
-              >
-                KTX &amp; SLEEPBOX
-              </Button>
-              <Button
-                variant={selectedCategory === "loft" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleCategorySelect("loft")}
-                className={selectedCategory === "loft" ? "bg-blue-600 text-white" : ""}
-              >
-                PHÒNG GÁC XẾP
-              </Button>
-              <Link href={`/rooms${selectedCategory !== "all" ? `?category=${selectedCategory}` : ""}`}>
-                <span className="text-blue-600 cursor-pointer hover:text-blue-700 font-medium">Xem thêm »</span>
-              </Link>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-8 gap-2">
+            <div>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">Phòng HOT</h2>
+              <p className="text-sm md:text-base text-gray-600">Những phòng trọ, căn hộ được ưa chuộng nhất</p>
             </div>
+            <Link 
+              href="/rooms?filter=featured" 
+              className="text-sm md:text-base text-primary hover:underline font-medium flex items-center mt-2 sm:mt-0"
+            >
+              Xem tất cả
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 md:h-5 md:w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
           </div>
 
-          {/* Category Info */}
-          {selectedCategory !== "all" && categoryInfo[selectedCategory as keyof typeof categoryInfo] && (
-            <div className="mb-8 p-6 bg-blue-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-blue-900 mb-2">
-                    {categoryInfo[selectedCategory as keyof typeof categoryInfo].title}
-                  </h3>
-                  <p className="text-blue-700 mb-2">
-                    {categoryInfo[selectedCategory as keyof typeof categoryInfo].description}
-                  </p>
-                  <div className="flex items-center gap-4 text-sm text-blue-600">
-                    <span>📊 {categoryInfo[selectedCategory as keyof typeof categoryInfo].count} phòng có sẵn</span>
-                    <span>💰 {categoryInfo[selectedCategory as keyof typeof categoryInfo].priceRange}</span>
-                  </div>
-                </div>
-                <Link href={`/rooms?category=${selectedCategory}`}>
-                  <Button className="bg-blue-600 hover:bg-blue-700">Xem tất cả</Button>
-                </Link>
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {filteredProperties.map((property, index) => (
-              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative h-48 w-full overflow-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {featuredProperties.map((property, index) => (
+              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                <div className="relative h-40 sm:h-48 w-full overflow-hidden">
                   <Image
                     src={getRandomImage(index)}
                     alt={property.title}
                     width={400}
                     height={300}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    priority
+                    priority={index < 4} // Only prioritize first 4 images
                   />
-                  {property.isHot && <Badge className="absolute top-2 left-2 bg-red-600">HOT</Badge>}
-                  <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-white/80 hover:bg-white">
-                    <Heart className="w-4 h-4" />
-                  </Button>
+                  {property.isHot && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                      HOT
+                    </div>
+                  )}
+                  <button 
+                    className="absolute top-2 right-2 bg-white/90 rounded-full p-2 hover:bg-white transition-colors"
+                    aria-label="Thêm vào yêu thích"
+                  >
+                    <Heart className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
+                  </button>
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{property.title}</h3>
-                  <p className="text-red-600 font-bold text-lg mb-2">{property.price}</p>
-                  <div className="flex items-center text-gray-600 text-sm mb-2">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    {property.location}
+                <CardContent className="p-3 md:p-4 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-1 md:mb-2">
+                    <h3 className="font-medium text-sm md:text-base text-gray-900 line-clamp-2">
+                      {property.title}
+                    </h3>
+                    <div className="flex items-center bg-primary/10 text-primary text-xs px-2 py-0.5 md:px-2 md:py-1 rounded whitespace-nowrap">
+                      <Star className="w-3 h-3 md:w-4 md:h-4 fill-current mr-0.5 md:mr-1" />
+                      <span>{property.rating}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between text-sm text-gray-600">
-                    <span>{property.area}</span>
-                    {property.bedrooms > 0 && <span>{property.bedrooms} phòng ngủ</span>}
+                  <p className="text-primary font-bold text-base md:text-lg mb-1 md:mb-2">{property.price}</p>
+                  <div className="flex items-center text-gray-600 text-xs md:text-sm mb-2 md:mb-3">
+                    <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-1 flex-shrink-0" />
+                    <span className="line-clamp-1">{property.location}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs md:text-sm text-gray-500 mt-auto pt-2 border-t">
+                    <div className="flex items-center">
+                      <Star className="w-3 h-3 md:w-4 md:h-4 text-yellow-500 fill-current mr-1" />
+                      <span>{property.rating}</span>
+                      <span className="mx-1">•</span>
+                      <span>{property.reviews} đánh giá</span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -1111,116 +1092,107 @@ export default function Homepage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white pt-12 pb-20 md:pb-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h4 className="font-bold mb-4">VỀ IZI HOUSE</h4>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li>
-                  <Link href="/about" className="hover:text-white">
-                    Giới thiệu
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/careers" className="hover:text-white">
-                    Tuyển dụng
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white">
-                    Liên hệ
-                  </Link>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Quy chế hoạt động
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">TÀI KHOẢN</h4>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Đăng ký
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Đăng nhập
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white">
-                    Quên mật khẩu
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">LIÊN HỆ</h4>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  Hotline: 0978379005
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  Email: izihouse@gmail.com
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">KẾT NỐI VỚI CHÚNG TÔI</h4>
-              <div className="flex gap-4">
-                <a 
-                  href="https://www.facebook.com/profile.php?id=61577216990159" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                  </svg>
+              <h3 className="text-lg font-bold mb-4">Về IZI HOUSE</h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Nền tảng kết nối chủ nhà và người tìm phòng hàng đầu Việt Nam.
+              </p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-white">
+                  <Facebook className="w-5 h-5" />
                 </a>
-                <a 
-                  href="#" 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                <a href="#" className="text-gray-400 hover:text-white">
+                  <Instagram className="w-5 h-5" />
                 </a>
-                <a 
-                  href="#" 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z" />
-                  </svg>
-                </a>
-                <a 
-                  href="#" 
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.765L15 14M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                <a href="#" className="text-gray-400 hover:text-white">
+                  <Youtube className="w-5 h-5" />
                 </a>
               </div>
             </div>
+            
+            <div>
+              <h3 className="text-lg font-bold mb-4">Liên kết nhanh</h3>
+              <ul className="space-y-2">
+                <li><a href="/about" className="text-gray-400 hover:text-white text-sm">Về chúng tôi</a></li>
+                <li><a href="/blog" className="text-gray-400 hover:text-white text-sm">Blog</a></li>
+                <li><a href="/contact" className="text-gray-400 hover:text-white text-sm">Liên hệ</a></li>
+                <li><a href="/help" className="text-gray-400 hover:text-white text-sm">Trợ giúp</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-bold mb-4">Hỗ trợ</h3>
+              <ul className="space-y-2">
+                <li><a href="/faq" className="text-gray-400 hover:text-white text-sm">Câu hỏi thường gặp</a></li>
+                <li><a href="/terms" className="text-gray-400 hover:text-white text-sm">Điều khoản sử dụng</a></li>
+                <li><a href="/privacy" className="text-gray-400 hover:text-white text-sm">Chính sách bảo mật</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-bold mb-4">Đăng ký nhận tin</h3>
+              <p className="text-gray-400 text-sm mb-4">Nhận thông tin mới nhất về các ưu đãi độc quyền</p>
+              <div className="flex">
+                <input 
+                  type="email" 
+                  placeholder="Nhập email của bạn" 
+                  className="bg-gray-800 text-white text-sm rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg text-sm font-medium">
+                  Gửi
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p> 2025 izihouse.com. Tất cả bản quyền thuộc về izi house.</p>
+          
+          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center mb-4 md:mb-0">
+              <Image 
+                src="/logo/logo.png" 
+                alt="IZI HOUSE" 
+                width={120} 
+                height={40} 
+                className="h-8 w-auto"
+              />
+              <span className="ml-2 text-gray-400 text-sm"> 2025 IZI HOUSE. All rights reserved.</span>
+            </div>
+            <div className="flex space-x-6">
+              <a href="#" className="text-gray-400 hover:text-white text-sm">Điều khoản</a>
+              <a href="#" className="text-gray-400 hover:text-white text-sm">Bảo mật</a>
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50 md:hidden">
+        <div className="flex justify-around items-center h-16">
+          <Link href="/" className="flex flex-col items-center justify-center text-primary">
+            <Home className="w-6 h-6" />
+            <span className="text-xs mt-1">Trang chủ</span>
+          </Link>
+          <Link href="/map" className="flex flex-col items-center justify-center text-gray-600 hover:text-primary">
+            <MapPin className="w-6 h-6" />
+            <span className="text-xs mt-1">Bản đồ</span>
+          </Link>
+          <Link href="/favorites" className="flex flex-col items-center justify-center text-gray-600 hover:text-primary">
+            <Heart className="w-6 h-6" />
+            <span className="text-xs mt-1">Yêu thích</span>
+          </Link>
+          <Link href="/account" className="flex flex-col items-center justify-center text-gray-600 hover:text-primary">
+            <User className="w-6 h-6" />
+            <span className="text-xs mt-1">Tài khoản</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Add bottom padding to main content to account for fixed mobile nav */}
+      <div className="pb-16 md:pb-0">
+        {/* All your existing content goes here */}
+      </div>
     </div>
   )
 }
