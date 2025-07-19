@@ -730,13 +730,14 @@ export default function Homepage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProperties.map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
-                <div className="relative">
+                <div className="relative h-48 w-full overflow-hidden">
                   <Image
                     src={getRandomImage(index)}
                     alt={property.title}
-                    width={800}
-                    height={400}
-                    className="w-full h-full object-cover rounded-lg"
+                    width={400}
+                    height={300}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    priority
                   />
                   {property.isHot && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -847,13 +848,14 @@ export default function Homepage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {filteredProperties.map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative">
+                <div className="relative h-48 w-full overflow-hidden">
                   <Image
                     src={getRandomImage(index)}
                     alt={property.title}
-                    width={800}
-                    height={400}
-                    className="w-full h-full object-cover rounded-lg"
+                    width={400}
+                    height={300}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    priority
                   />
                   {property.isHot && <Badge className="absolute top-2 left-2 bg-red-600">HOT</Badge>}
                   <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-white/80 hover:bg-white">
@@ -934,13 +936,14 @@ export default function Homepage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProperties.slice(0, 4).map((property, index) => (
               <Card key={property.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
-                <div className="relative">
+                <div className="relative h-48 w-full overflow-hidden">
                   <Image
                     src="/banner/roommate.jpg"
                     alt="Tìm bạn ở ghép"
-                    width={800}
-                    height={400}
-                    className="w-full h-full object-cover rounded-lg"
+                    width={400}
+                    height={300}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    priority
                   />
                   {property.isHot && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
